@@ -177,9 +177,14 @@ stock_community/
 │   │       ├── forum_list.html
 │   │       ├── forum_posts_list.html
 │   │       ├── forum_post_create.html
+|   |       ├── forum_post_update.html
 │   │       ├── forum_post_detail.html
+|   |       ├── forum_post_delete.html
+|   |       ├── forum_post_like.html
 │   │       ├── forum_comments.html
 │   │       ├── forum_comment_create.html
+|   |       ├── forum_comment_update.html
+|   |       ├── forum_comment_delete.html
 │   │       └── forum_comment_detail.html
 │   ├── __init__.py
 │   ├── admin.py
