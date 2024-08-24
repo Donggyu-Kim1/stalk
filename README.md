@@ -146,7 +146,7 @@ stock_community/
 │   ├── urls.py
 │   └── views.py
 │
-├── forum/
+└── forum/
     ├── migrations/
     ├── templates/
     │   └── forum/
@@ -169,25 +169,7 @@ stock_community/
 
 ### 4.2 개발 일정(WBS)
 ```mermaid
-gantt
-    title WBS for Stock Community Project (Aug 26 - Sep 1)
-    dateFormat  YYYY-MM-DD
-    section 프로젝트 설정
-    프로젝트 초기화 및 환경 설정   :2023-08-26, 1d
-    section 사용자 등록
-    회원가입 기능 구현            :2023-08-27, 1d
-    로그인/로그아웃 기능 구현      :2023-08-28, 1d
-    프로필 관리 기능 구현          :2023-08-29, 1d
-    section 주식 정보
-    기업 소개 페이지 구현          :2023-08-30, 1d
-    주가 차트 기능 구현            :2023-08-31, 1d
-    재무 정보 표시 기능 구현       :2023-09-01, 1d
-    section 게시글 + 댓글
-    게시글 CRUD 구현              :2023-08-30, 1d
-    댓글 CRUD 구현                :2023-08-31, 1d
-    좋아요 기능 구현              :2023-09-01, 1d
-    section 포트폴리오
-    포트폴리오 CRUD 구현          :2023-09-01, 1d
+
 ```
 
 
