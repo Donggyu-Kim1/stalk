@@ -3,14 +3,11 @@
 
 **"주식 토론방, 인증된 주주들끼리 기업의 최신 정보를 나누자!"**
 
-**"주식 포트폴리오를 한 눈에 관리하자!"**
-
 ## 1. 목표와 기능
 
 1.1 목표
 - 넘치는 주식 정보를 한 눈에 깔끔하게 얻자.
-- 인증된 주주들의 의견들을 실시간으로 나누자.
-- 정보들을 바탕으로 포트폴리오를 구성해보자
+- 인증된 주주들끼리 의견들을 나누자.
 
 1.2 주요 기능
 - 주식 정보
@@ -22,10 +19,6 @@
 - 토론방
     - 글 작성
     - 조회수, 좋아요, 즐겨찾기, 댓글 기능
-
-- 상상(자신만의) 주식 포트폴리오 만들기
-    - 포트폴리오 수익률 시각화
-    - 포트폴리오 관리
 
 
 ## 2. URL 구조
@@ -59,14 +52,6 @@
 | **forum** | /forum/posts/<int:post_id>/comments/create/ | forum_comment_create | forum/forum_comment_create.html | 새 댓글 작성 |
 | **forum** | /forum/posts/<int:post_id>/comments/<int:comment_id>/ | forum_comment_detail | forum/forum_comment_detail.html | 개별 댓글 조회/수정/삭제 |
 
-#### Portfolio URL
-| **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
-| -- | -- | -- | -- | -- |
-| **portfolio** | /portfolio/ | portfolio_list | portfolio/portfolio_list.html | 주식 포트폴리오 메인 화면 |
-| **portfolio** | /portfolio/create/ | portfolio_create | portfolio/portfolio_create.html | 새 포트폴리오 생성 |
-| **portfolio** | /portfolio/<int:portfolio_id>/ | portfolio_detail | portfolio/portfolio_detail.html개별 포트폴리오 조회/수정/삭제 |
-| **portfolio** | /portfolio/<int:portfolio_id>/stocks/ | portfolio_stocks | portfolio/portfolio_stocks.html | 포트폴리오 내 주식 목록 |
-
 
 ## 3. 기능 명세서
 1. 사용자 등록 기능
@@ -82,18 +67,13 @@
     - 재무 정보 : 기본 재무 정보 + 재무비율 표로 제공
 
 3. 게시글 + 댓글
-    - 주주 인증 절차 구현 : how?
+    - 주주 인증 절차 구현 :
     - 게시글 : 좋아요 기능
         - CRUD 
     - 댓글 : 좋아요 기능
         - CRUD 
     - 유효성 검사 : 광고, 악성 글 차단
     
-4. 포트폴리오
-    - 원 그래프 : 투자 비중 원 그래프 시각화
-    - 수익률 : 주식 별 수익률 시각화
-    - 포트폴리오 분석 : 변동성, 섹터 비율 등 분석
-    - CRUD
 
 | 대분류 | 중분류 | 소분류 | 설명 |
 |--------|--------|--------|------|
@@ -115,11 +95,6 @@
 | | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 기능 |
 | | | 좋아요 | 댓글 좋아요 기능 |
 | | 유효성 검사 | - | 광고, 악성 글 차단 기능 |
-| 4. 포트폴리오 | 포트폴리오 관리 | CRUD | 포트폴리오 생성, 조회, 수정, 삭제 기능 |
-| | 투자 비중 시각화 | 원 그래프 | 포트폴리오 내 투자 비중을 원 그래프로 시각화 |
-| | 수익률 분석 | 주식별 수익률 | 각 주식의 수익률 선 그래프로 시각화 |
-| | 포트폴리오 분석 | 변동성 분석 | 포트폴리오의 변동성 분석 |
-| | | 섹터 분석 | 포트폴리오의 섹터 비율 분석 |
     
 
 ## 4. 프로젝트 구조와 개발 일정
@@ -159,6 +134,7 @@ stock_community/
 │   │   └── accounts/
 │   │       ├── signup.html
 │   │       ├── login.html
+|   |       ├── logout.html
 │   │       ├── profile.html
 │   │       └── verify.html
 │   ├── __init__.py
@@ -171,37 +147,16 @@ stock_community/
 │   └── views.py
 │
 ├── forum/
-│   ├── migrations/
-│   ├── templates/
-│   │   └── forum/
-│   │       ├── forum_list.html
-│   │       ├── forum_posts_list.html
-│   │       ├── forum_post_create.html
-|   |       ├── forum_post_update.html
-│   │       ├── forum_post_detail.html
-|   |       ├── forum_post_delete.html
-|   |       ├── forum_post_like.html
-│   │       ├── forum_comments.html
-│   │       ├── forum_comment_create.html
-|   |       ├── forum_comment_update.html
-|   |       ├── forum_comment_delete.html
-│   │       └── forum_comment_detail.html
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py
-│   ├── tests.py
-│   ├── urls.py
-│   └── views.py
-│
-└── portfolio/
     ├── migrations/
     ├── templates/
-    │   └── portfolio/
-    │       ├── portfolio_list.html
-    │       ├── portfolio_create.html
-    │       ├── portfolio_detail.html
-    │       └── portfolio_stocks.html
+    │   └── forum/
+    │       ├── forum_list.html
+    │       ├── forum_posts_list.html
+    │       ├── forum_post_create.html
+    │       ├── forum_post_detail.html
+    │       ├── forum_comments.html
+    │       ├── forum_comment_create.html
+    │       └── forum_comment_detail.html
     ├── __init__.py
     ├── admin.py
     ├── apps.py
@@ -241,29 +196,7 @@ gantt
 ### 5.1 앱 화면 flow
 
 ```mermaid
-graph TD
-    A[메인 주식 화면] --> B{로그인 상태 확인}
 
-    B --> C[주식 정보 제공 화면]
-    C --> D{로그인 & 인증 확인}
-    D --> E[게시판 페이지]
-    D --> F[인증 필요]
-
-    B --> G[로그인 화면] --> B
-    B --> H[포트폴리오 구성 설정 화면]
-    H --> I[시각화 화면]
-
-    B --> J[프로필 설정 화면]
-
-    %% 로그인 상태 확인과 관련된 로직 통합
-    B -->|비로그인| G
-    D -->|비로그인| G
-    D -->|미인증| F
-
-    %% 시각화에서 필요 없는 중복 제거
-    classDef login fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef login_auth fill:#ff9,stroke:#333,stroke-width:2px;
-    class B,D,G,H,J,E,F,I login,login_auth
 ```
 
 ### 5.2 앱 화면
@@ -272,92 +205,7 @@ graph TD
 ## 6. 데이터베이스 구조도(ERD)
 
 ```mermaid
-erDiagram
-    User ||--o{ Portfolio : owns
-    User ||--o{ Post : writes
-    User ||--o{ Comment : writes
-    User ||--o{ StockHolding : holds
-    Portfolio ||--|{ StockHolding : contains
-    Post ||--o{ Comment : has
-    Stock ||--o{ News : related_to
-    Stock ||--o{ StockHolding : held_in
-    Post }|--|| Stock : discusses
 
-    User {
-        int id PK
-        string username UK
-        string password
-        string email UK
-        string phone_number
-        string nickname
-        bool is_verified
-        datetime created_at
-        datetime updated_at
-    }
-    Portfolio {
-        int id PK
-        int user_id FK
-        string name
-        datetime created_at
-        datetime updated_at
-    }
-    Post {
-        int id PK
-        int user_id FK
-        int stock_id FK
-        string title
-        text content
-        int views
-        int likes
-        bool is_favorited
-        datetime created_at
-        datetime updated_at
-    }
-    Comment {
-        int id PK
-        int user_id FK
-        int post_id FK
-        text content
-        int likes
-        datetime created_at
-        datetime updated_at
-    }
-    Stock {
-        int id PK
-        string symbol UK
-        string company_name
-        text company_description
-        float current_price
-        float open_price
-        float high_price
-        float low_price
-        float volume
-        float market_cap
-        float eps
-        float pe_ratio
-        float dividend_yield
-        float debt_to_equity
-        float return_on_equity
-        float profit_margin
-        string sector
-        datetime last_updated
-    }
-    News {
-        int id PK
-        int stock_id FK
-        string title
-        text content
-        string url
-        datetime published_at
-    }
-    StockHolding {
-        int id PK
-        int portfolio_id FK
-        int stock_id FK
-        int quantity
-        float purchase_price
-        datetime purchase_date
-    }
 ```
 
 ## 7. 구현 영상
