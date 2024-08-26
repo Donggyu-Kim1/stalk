@@ -1,13 +1,10 @@
 # 스톡(Stalk) 
-## 부제: Stock talking 이라는 뜻
-
-**"주식 토론방, 인증된 주주들끼리 기업의 최신 정보를 나누자!"**
 
 ## 1. 목표와 기능
 
 1.1 목표
-- 넘치는 주식 정보를 한 눈에 깔끔하게 얻자.
-- 인증된 주주들끼리 의견들을 나누자.
+- 기본적인 주식 투자를 위한 정보 제공
+- 종목별로 사용자들끼리 정보 공유 게시판 제공
 
 1.2 주요 기능
 - 주식 정보
@@ -18,7 +15,7 @@
 
 - 토론방
     - 글 작성
-    - 조회수, 좋아요, 즐겨찾기, 댓글 기능
+    - 조회수, 추천, 즐겨찾기, 댓글 기능
 
 
 ## 2. URL 구조
@@ -26,81 +23,90 @@
 #### Main URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
-| **stocks** | /stocks/ | stocks_list | stocks/stocks_list.html | 주식 정보 메인 화면 |
-| **stocks** | /stocks/company/ | stocks_company | stocks/stocks_company.html | 기업 소개 |
-| **stocks** | /stocks/news/ | stocks_news | stocks/stocks_news.html | 기업 관련 뉴스 |
-| **stocks** | /stocks/chart/ | stocks_chart | stocks/stocks_chart.html | 주가 차트 |
-| **stocks** | /stocks/financials/ | stocks_financials | stocks/stocks_financials.html | 재무 정보 (주요 재무제표 및 재무비율) |
+| **Main** | / | Main_view | base.html | 메인 페이지 |
 
-#### Registration URL
+
+#### Stocks URL
+| **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
+| -- | -- | -- | -- | -- |
+| **stocks** | /stocks/search/ | stocks_search | stocks/stocks_search.html | 주식 검색 창 |
+| **stocks** | /stocks/str:symbol/ | stocks_intro | stocks/stocks_intro.html | 주식 소개 글 |
+| **stocks** | /stocks/str:symbol/news/ | stocks_news | stocks/stocks_news.html | 기업 관련 뉴스 |
+| **stocks** | /stocks/str:symbol/chart/ | stocks_chart | stocks/stocks_chart.html | 주가 차트 |
+| **stocks** | /stocks/str:symbol/financials/ | stocks_financials | stocks/stocks_financials.html | 기업 재무 정보 |
+
+#### Accounts URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
 | **accounts** | /accounts/signup/ | accounts_signup | accounts/signup.html | 회원가입 |
 | **accounts** | /accounts/login/ | accounts_login | accounts/login.html | 로그인 |
-| **accounts** | /accounts/logout/ | accounts_logout |  | 로그아웃 |
-| **accounts** | /accounts/profile/ | accounts_profile | accounts/profile.html | 비밀번호 변경, 프로필 수정, 닉네임 추가 |
-| **accounts** | /accounts/verify/ | accounts_verify | accounts/verify.html | 주주 인증 |
+| **accounts** | /accounts/profile/ | accounts_profile | accounts/profile.html | 프로필 설정 |
 
-#### Post URL
+#### Forum URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
-| **forum** | /forum/ | forum_list | forum/forum_list.html | 주주 토론방 메인 화면 |
-| **forum** | /forum/posts/ | forum_posts_list | forum/forum_posts_list.html | 게시글 목록 |
-| **forum** | /forum/posts/create/ | forum_post_create | forum/forum_post_create.html | 새 게시글 작성 |
-| **forum** | /forum/posts/<int:post_id>/ | forum_post_detail | forum/forum_post_detail.html | 개별 게시글 조회/수정/삭제 |
-| **forum** | /forum/posts/<int:post_id>/comments/ | forum_comments | forum/forum_comments.html | 댓글 목록 |
-| **forum** | /forum/posts/<int:post_id>/comments/create/ | forum_comment_create | forum/forum_comment_create.html | 새 댓글 작성 |
-| **forum** | /forum/posts/<int:post_id>/comments/<int:comment_id>/ | forum_comment_detail | forum/forum_comment_detail.html | 개별 댓글 조회/수정/삭제 |
+| **forum** | /forum/ | forum_main | forum/forum_main.html | 주주 토론방 메인 |
+| **forum** | /forum/list/ | forum_list | forum/forum_list.html | 글 리스트 |
+| **forum** | /forum/create/ | post_create | forum/post_create.html | 글 작성 |
+| **forum** | /forum/int:post_id/ | fpost_read | forum/post_read.html | 글 읽기 |
+| **forum** | /forum/int:post_id/update/ | post_update | forum/post_update.html | 글 수정 |
+| **forum** | /forum/int:post_id/delete/ | post_delete | forum/post_delete.html | 글 삭제 |
+| **forum** | /forum/int:post_id/comments/ | post_comment_list | forum/post_comment_list.html | 댓글 리스트 |
+| **forum** | /forum/int:post_id/comments/create/ | post_comment_create | forum/post_comment_create.html | 댓글/대댓글 작성 |
+| **forum** | /forum/int:post_id/comments/int:comment_id/ | post_comment_detail | forum/post_comment_detail.html | 댓글 수정/삭제 |
 
 
 ## 3. 기능 명세서
 1. 사용자 등록 기능
-    - 회원가입 : 아이디, 비밀번호, 전화번호, 이메일, 이름, 닉네임
-    - 로그인 : 
-    - 로그아웃 :
-    - 비밀번호 변경, 프로필 수정, 닉네임 추가 :
+    - 회원가입 : 아이디, 비밀번호, 닉네임
+        - 유효성 검사: 불쾌한 닉네임 차단
+    - 로그인
+    - 사용자 정보 변경
 
 2. 주식 정보
     - 기업 소개 : 기업 소개 글
-    - 기업 관련 뉴스 : Yahoo Finance 뉴스 크롤링, 없을 경우, none 출력 -> 가장 최신 뉴스 1개, 인기 조회수 2개 구현
+    - 기업 관련 뉴스 : Yahoo Finance 뉴스 크롤링
     - 주가 차트 : 주가 차트 제공 기능 구현
     - 재무 정보 : 기본 재무 정보 + 재무비율 표로 제공
 
 3. 게시글 + 댓글
-    - 주주 인증 절차 구현 :
-    - 게시글 : 조회수 기능
-        - CRUD 
-    - 댓글 : 조회수 기능
-        - CRUD 
+    - 게시글
+        - CRUD
+        - 추천, 조회수 
+    - 댓글
+        - CRUD
+        - 추천
+        - 대댓글 작성
     - 유효성 검사 : 광고, 악성 글 차단
     
 
 | 대분류 | 중분류 | 소분류 | 설명 | 완성 여부 |
 |--------|--------|--------|------| :--: |
-| 기획 | 아이디어 기획 | - | 핵심 기능 설계 | |
+| 기획 | 아이디어 기획 | - | 핵심 기능 설계 | 0826 10시 ~ 12시 |
 | | WBS 작성 | - | mermaid로 프로젝트 단계 세분화 | |
-| | ERD 그리기 | - | 데이터, 앱 구조도 그리기 | |
+| | ERD 그리기 | - | DB, 앱 flow 그리기 | |
 | | 와이어프레임 | - | 앱 UI 설계 및 그리기 | |
-| 1. 사용자 등록 | 회원가입 | - | 아이디, 비밀번호, 전화번호, 이메일, 닉네임 | |
+| 1. 사용자 등록 | 회원가입 | - | 아이디, 비밀번호, 닉네임 | |
 | | 로그인 | - | 등록된 사용자 인증 | |
 | | 로그아웃 | - | 사용자 세션 종료 | |
 | | 프로필 관리 | 비밀번호 변경 | 사용자 비밀번호 수정 | |
-| | | 프로필 수정 | 사용자 프로필 정보 수정 | |
-| | | 닉네임 추가 | 사용자 닉네임 변경 | |
+| | | 닉네임 변경 | 사용자 닉네임 변경 | |
 | 2. 주식 정보 | 기업 소개 | - | 기업에 대한 소개글 제공 | |
 | | 기업 관련 뉴스 | 뉴스 크롤링 | Yahoo Finance에서 최신 뉴스 1개, 인기 뉴스 2개 크롤링 | |
 | | | 뉴스 표시 | 크롤링한 뉴스 표시, 없을 경우 'none' 출력 | |
 | | 주가 차트 | - | 주식의 가격 변동 차트 제공 | |
 | | 재무 정보 | 기본 재무 정보 | 주요 재무 정보 표로 제공 | |
 | | | 재무 비율 | 주요 재무 비율 표로 제공 | |
-| 3. 게시글 + 댓글 | 주주 인증 | - | 토론방 접근을 위한 주주 인증 절차 | |
-| | 게시글 | CRUD | 게시글 생성, 조회, 수정, 삭제 기능 | |
-| | | 좋아요 | 게시글 좋아요 기능 | |
+| 3. 게시글 + 댓글 | 게시글 | CRUD | 게시글 생성, 조회, 수정, 삭제 기능 | |
+| | | 추천 | 게시글 추천 기능 | |
+| | | 조회수 | 게시글 조회수 기능 | |
+| | | 유효성 검사 | 광고, 악성 글 차단 기능 | |
 | | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 기능 | |
-| | | 좋아요 | 댓글 좋아요 기능 | |
-| | 유효성 검사 | - | 광고, 악성 글 차단 기능 | |
+| | | 추천 | 댓글 추천 기능 | |
+| | | 대댓글 | 댓글에 대댓글 기능 | |
 | 4. 마무리 | 구현 영상 | - | - | |
 | | README 파일 작성 | - | - | |
+| | 배포 | - | - | |
     
 
 ## 4. 프로젝트 구조와 개발 일정
@@ -111,21 +117,43 @@
 stock_community/
 │
 ├── manage.py
+├── templates/
+│   │   ├── stocks/
+│   │   |   ├── stocks_search.html  # 주식 검색 창
+│   │   |   ├── stocks_intro.html   # 주식 소개 글
+│   │   |   ├── stocks_news.html    # 기업 관련 뉴스
+│   │   |   ├── stocks_chart.html   # 주가 차트
+│   │   |   └── stocks_financials.html  # 기업 재무 정보
+|   |   |
+│   │   ├── accounts/
+│   │   │   ├── signup.html    # 회원가입
+│   │   │   ├── login.html     # 로그인
+│   │   │   ├── profile.html   # 프로필 설정
+│   │   │   └── verify.html    # 주주 인증
+|   |   |
+|   │   └── forum/
+|   │       ├── forum_main.html       # 글 조회
+|   │       ├── forum_list.html       # 글 리스트
+|   │       ├── post_create.html      # 글 작성
+|   │       ├── post_read.html        # 글 읽기
+|   │       ├── post_update.html      # 글 수정
+|   │       ├── post_delete.html      # 글 삭제
+|   │       ├── post_detail.html      # 글 추천, 조회수
+|   │       ├── post_comment_list.html     # 댓글 리스트
+|   │       ├── post_comment_create.html   # 댓글/대댓글 작성
+|   │       └── post_comment_detail.html   # 댓글 수정/삭제
+|   |
+│   └── base.html   # 기본 템플릿
+|
 ├── stock_community/
 │   ├── __init__.py
+│   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
 │
 ├── stocks/
 │   ├── migrations/
-│   ├── templates/
-│   │   └── stocks/
-│   │       ├── stocks_list.html
-│   │       ├── stocks_company.html
-│   │       ├── stocks_news.html
-│   │       ├── stocks_chart.html
-│   │       └── stocks_financials.html
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
@@ -136,13 +164,6 @@ stock_community/
 │
 ├── accounts/
 │   ├── migrations/
-│   ├── templates/
-│   │   └── accounts/
-│   │       ├── signup.html
-│   │       ├── login.html
-|   |       ├── logout.html
-│   │       ├── profile.html
-│   │       └── verify.html
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
@@ -154,15 +175,6 @@ stock_community/
 │
 └── forum/
     ├── migrations/
-    ├── templates/
-    │   └── forum/
-    │       ├── forum_list.html
-    │       ├── forum_posts_list.html
-    │       ├── forum_post_create.html
-    │       ├── forum_post_detail.html
-    │       ├── forum_comments.html
-    │       ├── forum_comment_create.html
-    │       └── forum_comment_detail.html
     ├── __init__.py
     ├── admin.py
     ├── apps.py
@@ -176,27 +188,37 @@ stock_community/
 ### 4.2 개발 일정(WBS)
 ```mermaid
 gantt
-    title 프로젝트 WBS (8월 26일 - 9월 1일)
-    dateFormat  YYYY-MM-DD
+    title 주식 커뮤니티 프로젝트 WBS
+    dateFormat  YYYY-MM-DD HH:mm
+
     section 기획
-    아이디어 기획 :2023-08-26, 1d
-    WBS 작성 :2023-08-26, 1d
-    ERD 그리기 :2023-08-27, 1d
-    와이어프레임 :2023-08-27, 1d
-    section 사용자 등록
-    회원가입 구현 :2023-08-28, 1d
-    로그인/로그아웃 구현 :2023-08-28, 1d
-    프로필 관리 구현 :2023-08-29, 1d
-    section 주식 정보
-    기업 소개 구현 :2023-08-29, 1d
-    기업 관련 뉴스 크롤링 :2023-08-30, 1d
-    주가 차트 구현 :2023-08-30, 1d
-    재무 정보 구현 :2023-08-31, 1d
-    section 게시글 + 댓글
-    주주 인증 구현 :2023-08-31, 1d
-    게시글 CRUD 구현 :2023-09-01, 1d
-    댓글 CRUD 구현 :2023-09-01, 1d
-    좋아요 기능 구현 :2023-09-01, 1d
+    아이디어 기획      :2024-08-26 09:00, 3h
+    WBS 작성          :2024-08-26 12:00, 10m
+    ERD 그리기         :2024-08-26 12:10, 1d
+    와이어프레임        :2024-08-26 13:00, 1d
+
+    section 1. 사용자 등록
+    회원가입           :2024-08-28, 1d
+    로그인             :2024-08-28, 1d
+    로그아웃           :2024-08-28, 1d
+    프로필 관리         :2024-08-29, 1d
+
+    section 2. 주식 정보
+    기업 소개          :2024-08-29, 1d
+    기업 관련 뉴스      :2024-08-30, 1d
+    주가 차트          :2024-08-30, 1d
+    재무 정보          :2024-08-31, 1d
+
+    section 3. 게시글 + 댓글
+    게시글 CRUD        :2024-08-31, 1d
+    게시글 추천/조회수   :2024-09-01, 1d
+    댓글 CRUD          :2024-09-01, 1d
+    댓글 추천/대댓글     :2024-09-01, 1d
+
+    section 4. 마무리
+    구현 영상          :2024-09-01, 1d
+    README 파일 작성   :2024-09-01, 1d
+    배포              :2024-09-01, 1d
 ```
 
 
@@ -210,13 +232,7 @@ gantt
         B -->|Yes| C[주식 검색 창]
         B -->|No| A
         C --> D[주식 정보 창]
-        D --> E{주주 인증 완료?}
-        E -->|Yes| F[토론방]
-        E -->|No| G[주주 인증 화면]
-        G --> E
-        
-        F --> H[글 작성]
-        F --> I[글 조회]
+        D --> E[종목별 게시판]
         
         subgraph "주식 정보 창 내용"
             D1[주가 차트]
@@ -224,21 +240,11 @@ gantt
             D3[기업 소개]
             D4[기업 관련 뉴스]
         end
-
-        subgraph "글 조회 기능"
-            I1[조회수]
-            I2[좋아요]
-            I3[댓글 CRUD]
-        end
         
         D --> D1
         D --> D2
         D --> D3
         D --> D4
-
-        I --> I1
-        I --> I2
-        I --> I3
 ```
 
 ### 5.2 앱 화면
@@ -249,5 +255,6 @@ gantt
 ```mermaid
 
 ```
+
 
 ## 7. 구현 영상
