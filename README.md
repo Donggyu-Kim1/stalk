@@ -128,9 +128,8 @@ stock_community/
 │   │   ├── accounts/
 │   │   │   ├── signup.html    # 회원가입
 │   │   │   ├── login.html     # 로그인
-│   │   │   ├── profile.html   # 프로필 설정
-│   │   │   └── verify.html    # 주주 인증
-|   |   |
+│   │   │   └── profile.html   # 프로필 설정
+│   │   │
 |   │   └── forum/
 |   │       ├── forum_main.html       # 글 조회
 |   │       ├── forum_list.html       # 글 리스트
@@ -194,7 +193,7 @@ gantt
     section 기획
     아이디어 기획      :2024-08-26 09:00, 3h
     WBS 작성          :2024-08-26 12:00, 10m
-    ERD 그리기         :2024-08-26 12:00, 1h
+    ERD 그리기         :2024-08-26 12:00, 2h
     와이어프레임        :2024-08-26 13:00, 1d
 
     section 1. 사용자 등록
@@ -247,7 +246,7 @@ gantt
         D --> D4
 ```
 
-### 5.2 앱 화면
+### 5.2 와이어프레임
 
 
 ## 6. 데이터베이스 구조도(ERD)
