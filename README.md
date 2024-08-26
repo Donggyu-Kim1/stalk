@@ -48,7 +48,8 @@
 | **forum** | /forum/ | forum_main | forum/forum_main.html | 주주 토론방 메인 |
 | **forum** | /forum/list/ | forum_list | forum/forum_list.html | 글 리스트 |
 | **forum** | /forum/create/ | post_create | forum/post_create.html | 글 작성 |
-| **forum** | /forum/int:post_id/ | fpost_read | forum/post_read.html | 글 읽기 |
+| **forum** | /forum/int:post_id/ | post_read | forum/post_read.html | 글 읽기 |
+| **forum** | /forum/int:post_id/detail/ | post_detail | forum/post_detail.html | 글 추천, 조회수 |
 | **forum** | /forum/int:post_id/update/ | post_update | forum/post_update.html | 글 수정 |
 | **forum** | /forum/int:post_id/delete/ | post_delete | forum/post_delete.html | 글 삭제 |
 | **forum** | /forum/int:post_id/comments/ | post_comment_list | forum/post_comment_list.html | 댓글 리스트 |
