@@ -1,3 +1,22 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+class stocksSearchView():
+    pass
+
+
+class stocksIntroView():
+    pass
+
+
+class stocksNewsView():
+    pass
+
+
+class stocksChartView():
+    pass
+
+
+class stocksFinancialsView():
+    pass
+
