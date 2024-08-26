@@ -82,9 +82,9 @@
 
 | 대분류 | 중분류 | 소분류 | 설명 | 완성 여부 |
 |--------|--------|--------|------| :--: |
-| 기획 | 아이디어 기획 | - | 핵심 기능 설계 | 0826 10시 ~ 12시 |
-| | WBS 작성 | - | mermaid로 프로젝트 단계 세분화 | |
-| | ERD 그리기 | - | DB, 앱 flow 그리기 | |
+| 기획 | 아이디어 기획 | - | 핵심 기능 설계 | ㅇ |
+| | WBS 작성 | - | mermaid로 프로젝트 단계 세분화 | ㅇ |
+| | ERD 그리기 | - | DB, 앱 flow 그리기 | ㅇ |
 | | 와이어프레임 | - | 앱 UI 설계 및 그리기 | |
 | 1. 사용자 등록 | 회원가입 | - | 아이디, 비밀번호, 닉네임 | |
 | | 로그인 | - | 등록된 사용자 인증 | |
@@ -194,7 +194,7 @@ gantt
     section 기획
     아이디어 기획      :2024-08-26 09:00, 3h
     WBS 작성          :2024-08-26 12:00, 10m
-    ERD 그리기         :2024-08-26 12:10, 1d
+    ERD 그리기         :2024-08-26 12:00, 1h
     와이어프레임        :2024-08-26 13:00, 1d
 
     section 1. 사용자 등록
@@ -224,7 +224,7 @@ gantt
 
 ## 5 화면 설계
 
-### 5.1 서비스 화면 flow
+### 5.1 화면 flow
 
 ```mermaid
     graph TD
@@ -253,7 +253,50 @@ gantt
 ## 6. 데이터베이스 구조도(ERD)
 
 ```mermaid
+erDiagram
+    USER {
+        int user_id PK "Primary Key"
+        string username "아이디"
+        string password "비밀번호"
+        string nickname "닉네임"
+        datetime created_at "가입일"
+        datetime updated_at "정보 수정일"
+    }
 
+    POST {
+        int post_id PK "Primary Key"
+        int user_id FK "작성자"
+        int stock_id FK "연결된 주식 종목"
+        string title "게시글 제목"
+        text content "게시글 내용"
+        int views "조회수"
+        int likes "추천수"
+        datetime created_at "작성일"
+        datetime updated_at "수정일"
+    }
+
+    COMMENT {
+        int comment_id PK "Primary Key"
+        int post_id FK "연결된 게시글"
+        int user_id FK "작성자"
+        int parent_comment_id "대댓글의 경우 부모 댓글 ID"
+        text content "댓글 내용"
+        int likes "추천수"
+        datetime created_at "작성일"
+        datetime updated_at "수정일"
+    }
+
+    STOCK {
+        int stock_id PK "Primary Key"
+        string stock_symbol "종목 코드"
+        string company_name "기업 이름"
+        text company_info "기업 소개"
+    }
+
+    USER ||--o{ POST : "작성"
+    USER ||--o{ COMMENT : "작성"
+    POST ||--o{ COMMENT : "게시글에 달린 댓글"
+    STOCK ||--o{ POST : "종목 관련 게시글"
 ```
 
 
