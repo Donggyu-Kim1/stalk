@@ -292,7 +292,6 @@ erDiagram
         int stock_id PK "Primary Key"
         string stock_symbol "종목 코드"
         string company_name "기업 이름"
-        text company_info "기업 소개"
     }
 
     USER ||--o{ POST : "작성"
