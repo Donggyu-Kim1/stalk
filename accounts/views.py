@@ -14,6 +14,9 @@ class SignUpView(CreateView):
 class CustomLoginView(LoginView):
     template_name = 'accounts/login.html'
 
+    def get_success_url(self):
+        return reverse_lazy('stocks_search')
+
 class CustomLogoutView(LogoutView):
     next_page = 'login'
 
