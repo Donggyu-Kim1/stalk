@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-
+from dotenv import load_dotenv
 import os
-OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,3 +127,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+load_dotenv()
+
+# 환경변수를 가져오는 것을 수행
+OPEN_API_KEY = os.getenv('OPEN_API_KEY')
+
+if OPEN_API_KEY:
+    print('OPEN_API_KEY 가 성공적으로 로드되었습니다.')
+else:
+    print('OPEN_API_KEY 로드 실패!')

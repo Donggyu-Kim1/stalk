@@ -1,93 +1,81 @@
+from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Stock, StockSearch
 import openai
-from django.conf import settings
-from django.views import View
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
 import yfinance as yf
-from .models import Stock
+import os
 
-openai.api_key = settings.OPENAI_API_KEY
+openai.api_key = os.getenv('OPEN_API_KEY')
 
-class stocksSearchView(View):
-    def get(self, request):
-        query = request.GET.get('query', '')
-        
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant that provides stock symbols for company names. Respond with only the stock symbol."},
-                {"role": "user", "content": f"What is the stock symbol for {query}?"}
-            ]
-        )
-        
-        symbol = response.choices[0].message['content'].strip()
+class StocksSearchView(TemplateView):
+    template_name = 'stocks/stocks_search.html'
+
+    def post(self, request, *args, **kwargs):
+        search_term = request.POST.get('search_term')
         
         try:
-            stock = yf.Ticker(symbol)
-            info = stock.info
-            
-            # Save or update stock information in the database
-            stock_obj, created = Stock.objects.update_or_create(
-                stock_symbol=symbol,
-                defaults={'company_name': info.get('longName', query)}
+            # Use ChatGPT to convert company name to ticker
+            response = openai.Completion.create(
+              engine="text-davinci-002",
+              prompt=f"Convert the company name '{search_term}' to its stock ticker symbol.",
+              max_tokens=60
             )
-            
-            data = {
-                'stock_id': stock_obj.stock_id,
-                'symbol': symbol,
-                'name': stock_obj.company_name,
-                'current_price': info.get('currentPrice', 'N/A'),
-                'currency': info.get('currency', 'N/A'),
-            }
-            
-            return JsonResponse(data)
+            ticker = response.choices[0].text.strip()
+
+            # Verify the ticker exists
+            stock = yf.Ticker(ticker)
+            if not stock.info:
+                raise ValueError("Invalid ticker")
+
+            # Save to database
+            stock, created = Stock.objects.get_or_create(ticker=ticker, defaults={'company_name': search_term})
+            StockSearch.objects.create(stock=stock, search_term=search_term)
+
+            return redirect('stocks_intro', ticker=ticker)
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=400)
+            messages.error(request, f"'{search_term}'에 해당하는 주식 티커를 찾을 수 없습니다. 다시 시도해주세요.")
+            return self.get(request, *args, **kwargs)
 
-class stocksIntroView(View):
-    def get(self, request, symbol):
-        stock = get_object_or_404(Stock, stock_symbol=symbol)
-        ticker = yf.Ticker(symbol)
-        info = ticker.info
-        
-        data = {
-            'stock_id': stock.stock_id,
-            'symbol': stock.stock_symbol,
-            'name': stock.company_name,
-            'sector': info.get('sector', 'N/A'),
-            'description': info.get('longBusinessSummary', 'No description available.'),
-            'website': info.get('website', 'N/A'),
-            'market_cap': info.get('marketCap', 'N/A'),
-        }
-        
-        return render(request, 'stocks/intro.html', data)
+class StocksIntroView(TemplateView):
+    template_name = 'stocks/stocks_intro.html'
 
-class stocksNewsView(View):
-    def get(self, request, symbol):
-        stock = get_object_or_404(Stock, stock_symbol=symbol)
-        ticker = yf.Ticker(symbol)
-        news = ticker.news
-        
-        return render(request, 'stocks/news.html', {'stock': stock, 'news': news})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ticker = self.kwargs.get('ticker')
+        stock = yf.Ticker(ticker)
+        context['stock_info'] = stock.info
+        return context
 
-class stocksChartView(View):
-    def get(self, request, symbol):
-        stock = get_object_or_404(Stock, stock_symbol=symbol)
-        ticker = yf.Ticker(symbol)
-        history = ticker.history(period="1mo")
-        
-        chart_data = [
-            {'date': date.strftime('%Y-%m-%d'), 'price': price} 
-            for date, price in zip(history.index, history['Close'])
-        ]
-        
-        return render(request, 'stocks/chart.html', {'stock': stock, 'chart_data': chart_data})
+class StocksNewsView(TemplateView):
+    template_name = 'stocks/stocks_news.html'
 
-class stocksFinancialsView(View):
-    def get(self, request, symbol):
-        stock = get_object_or_404(Stock, stock_symbol=symbol)
-        ticker = yf.Ticker(symbol)
-        financials = ticker.financials
-        
-        return render(request, 'stocks/financials.html', {'stock': stock, 'financials': financials.to_dict()})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ticker = self.kwargs.get('ticker')
+        stock = yf.Ticker(ticker)
+        context['news'] = stock.news
+        return context
+
+class StocksChartView(TemplateView):
+    template_name = 'stocks/stocks_chart.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ticker = self.kwargs.get('ticker')
+        stock = yf.Ticker(ticker)
+        context['history'] = stock.history(period="1y")
+        return context
+
+class StocksFinancialsView(TemplateView):
+    template_name = 'stocks/stocks_financials.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ticker = self.kwargs.get('ticker')
+        stock = yf.Ticker(ticker)
+        context['financials'] = stock.financials
+        context['balance_sheet'] = stock.balance_sheet
+        context['cash_flow'] = stock.cashflow
+        return context
 
