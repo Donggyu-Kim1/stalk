@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ stock_info.longName }} - Financials{% endblock %}
+{% block title %}{{ stock_info.longName }} 재무제표{% endblock %}
 
 {% block content %}
-<h1>{{ stock_info.longName }} - Financial Information</h1>
+<h1>{{ stock_info.longName }} 재무제표</h1>
 
-<h2>Income Statement</h2>
+<h2>손익계산서</h2>
 <table>
     <tr>
         <th>Metric</th>
@@ -23,7 +23,7 @@
     {% endfor %}
 </table>
 
-<h2>Balance Sheet</h2>
+<h2>재무상태표</h2>
 <table>
     <tr>
         <th>Metric</th>
@@ -41,7 +41,7 @@
     {% endfor %}
 </table>
 
-<h2>Cash Flow</h2>
+<h2>현금흐름표</h2>
 <table>
     <tr>
         <th>Metric</th>

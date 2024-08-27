@@ -8,4 +8,7 @@
 <p>이메일: {{ user.email }}</p>
 <p>이름: {{ user.first_name }} {{ user.last_name }}</p>
 <a href="{% url 'edit_profile' %}">프로필 수정</a>
+
+<p><a href="{% url 'stocks_search' %}">주식 검색으로 돌아가기</a></p>
+
 {% endblock %}

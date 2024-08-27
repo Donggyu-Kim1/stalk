@@ -25,12 +25,12 @@ class StocksSearchView(TemplateView):
 
             # Verify the ticker exists
             stock = yf.Ticker(ticker)
-            if not stock.info:
+            if not stock.info.get('symbol'):
                 raise ValueError("Invalid ticker")
 
             # Save to database
-            stock, created = Stock.objects.get_or_create(ticker=ticker, defaults={'company_name': search_term})
-            StockSearch.objects.create(stock=stock, search_term=search_term)
+            stock_obj, created = Stock.objects.get_or_create(ticker=ticker, defaults={'company_name': search_term})
+            StockSearch.objects.create(stock=stock_obj, search_term=search_term)
 
             return redirect('stocks_intro', ticker=ticker)
         except Exception as e:

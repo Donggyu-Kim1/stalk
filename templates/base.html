@@ -6,7 +6,10 @@
     <title>{% block title %}STALK{% endblock %}</title>
 </head>
 <body>
-    <header>
+    <main>
+        {% block content %}
+        <!-- 각 페이지의 콘텐츠가 여기에 삽입됩니다. -->
+        {% endblock %}
         <nav>
             <ul>
                 {% if user.is_authenticated %}
@@ -20,11 +23,6 @@
                 {% endif %}
             </ul>
         </nav>
-    </header>
-    <main>
-        {% block content %}
-        <!-- 각 페이지의 콘텐츠가 여기에 삽입됩니다. -->
-        {% endblock %}
     </main>
 </body>
 </html>

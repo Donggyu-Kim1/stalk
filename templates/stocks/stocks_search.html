@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 
-{% block title %}Stock Search{% endblock %}
+{% block title %}주식 검색하기{% endblock %}
 
 {% block content %}
-<h1>Search for a Stock</h1>
+<h1>주식 검색</h1>
 <form method="post">
     {% csrf_token %}
     <input type="text" name="search_term" placeholder="Enter company name">
-    <button type="submit">Search</button>
+    <button type="submit">검색</button>
 </form>
 
-<!-- 프로필 페이지로 이동하는 버튼 -->
 <a href="{% url 'profile' %}">
     <button type="button">프로필 설정</button>
 </a>
