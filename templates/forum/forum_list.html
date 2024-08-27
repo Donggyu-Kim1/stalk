@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ ticker }} 토론방</h1>
+
+<a href="{% url 'forum:post_create' ticker=ticker %}">새 포스트 만들기</a>
+
+{% if posts %}
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="{% url 'forum:post_read' ticker=ticker post_id=post.id %}">
+                    {{ post.title }} by {{ post.author }} (Views: {{ post.views }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>아직 올라온 포스트가 없습니다.</p>
+{% endif %}
+{% endblock %}

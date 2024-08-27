@@ -1,0 +1,12 @@
+{% if comments %}
+    <ul>
+        {% for comment in comments %}
+            <li>
+                {{ comment.author }}: {{ comment.content }}
+                <a href="{% url 'forum:post_comment_detail' ticker=ticker post_id=post.id comment_id=comment.id %}">수정</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>댓글이 아직 존재하지 않습니다.</p>
+{% endif %}

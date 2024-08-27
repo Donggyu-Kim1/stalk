@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>댓글 수정하기</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">저장</button>
+</form>
+
+<a href="{% url 'forum:post_read' ticker=ticker post_id=post.id %}">취소</a>
+{% endblock %}

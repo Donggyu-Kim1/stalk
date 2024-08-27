@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>포스트 삭제</h1>
+<p>정말로 이 포스트를 삭제하시겠습니까?: "{{ post.title }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">삭제</button>
+</form>
+
+<a href="{% url 'forum:post_read' ticker=ticker post_id=post.id %}">취소</a>
+{% endblock %}

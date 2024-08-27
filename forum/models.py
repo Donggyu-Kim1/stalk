@@ -1,30 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
-from stocks.models import Stock  # stocks 앱의 Stock 모델을 import
+from django.utils import timezone
 
 class Post(models.Model):
-    post_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)  # stocks 앱의 Stock 모델을 참조
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=255)  # 게시물 제목
+    content = models.TextField()  # 게시물 내용
+    author = models.ForeignKey(User, on_delete=models.CASCADE)  # 작성자
+    created_at = models.DateTimeField(default=timezone.now)  # 작성 시간
+    updated_at = models.DateTimeField(auto_now=True)  # 수정 시간
+    views = models.PositiveIntegerField(default=0)  # 조회수
+    stock_ticker = models.CharField(max_length=10)  # 주식 티커
 
     def __str__(self):
         return self.title
 
 class Comment(models.Model):
-    comment_id = models.AutoField(primary_key=True)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    parent_comment = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
-    content = models.TextField()
-    likes = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')  # 연결된 게시물
+    author = models.ForeignKey(User, on_delete=models.CASCADE)  # 작성자
+    content = models.TextField()  # 댓글 내용
+    created_at = models.DateTimeField(default=timezone.now)  # 작성 시간
+    updated_at = models.DateTimeField(auto_now=True)  # 수정 시간
 
     def __str__(self):
-        return f"Comment by {self.user.username} on {self.post.title}"
+        return f'Comment by {self.author} on {self.post}'

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}STALK{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">로그아웃</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">로그인</a></li>
+                    <li><a href="{% url 'signup' %}">회원가입</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% if user.is_authenticated %}
+            <div class="stock-search">
+                <form method="get" action="{% url 'stock_search' %}">
+                    <input type="text" name="q" placeholder="Search for stocks..." required>
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        {% endif %}
+
+        {% block content %}
+        <!-- 각 페이지의 콘텐츠가 여기에 삽입됩니다. -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Stalk</p>
+    </footer>
+</body>
+</html>
