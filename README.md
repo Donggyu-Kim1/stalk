@@ -202,17 +202,17 @@ gantt
     와이어프레임        :2024-08-29, 1d
 
     section 1. 사용자 등록
-    회원가입           :2024-08-27 10:00, 1d
-    로그인             :2024-08-27 10:00, 1d
-    로그아웃           :2024-08-27 10:00, 1d
-    프로필 관리         :2024-08-27 10:00, 1d
+    회원가입           :2024-08-27, 1d
+    로그인             :2024-08-27, 1d
+    로그아웃           :2024-08-27, 1d
+    프로필 관리         :2024-08-27, 1d
 
     section 2. 주식 정보
-    생성형 AI 연결     :2024-08-27 09:00, 1h
-    기업 소개          :2024-08-27 09:00, 1d
-    기업 관련 뉴스      :2024-08-27 09:00, 1d
-    주가 차트          :2024-08-27 09:00, 1d
-    재무 정보          :2024-08-27 09:00, 1d
+    생성형 AI 연결     :2024-08-27, 1h
+    기업 소개          :2024-08-27, 1d
+    기업 관련 뉴스      :2024-08-27, 1d
+    주가 차트          :2024-08-27, 1d
+    재무 정보          :2024-08-27, 1d
 
     section 3. 게시글 + 댓글
     게시글 CRUD        :2024-08-29, 1d
@@ -259,18 +259,23 @@ gantt
 
 ```mermaid
 erDiagram
-    USER {
-        int user_id PK "Primary Key"
+    AUTH_USER {
+        int id PK "Primary Key"
         string username "아이디"
         string password "비밀번호"
-        string name "이름"
-        datetime created_at "가입일"
-        datetime updated_at "정보 수정일"
+        string first_name "이름"
+        string last_name "성"
+        string email "이메일"
+        boolean is_staff "관리자 여부"
+        boolean is_active "활성화 여부"
+        boolean is_superuser "슈퍼유저 여부"
+        datetime last_login "마지막 로그인 시간"
+        datetime date_joined "가입일"
     }
 
     POST {
         int post_id PK "Primary Key"
-        int user_id FK "작성자"
+        int user_id FK "작성자 (auth_user.id)"
         int stock_id FK "연결된 주식 종목"
         string title "게시글 제목"
         text content "게시글 내용"
@@ -283,7 +288,7 @@ erDiagram
     COMMENT {
         int comment_id PK "Primary Key"
         int post_id FK "연결된 게시글"
-        int user_id FK "작성자"
+        int user_id FK "작성자 (auth_user.id)"
         int parent_comment_id "대댓글의 경우 부모 댓글 ID"
         text content "댓글 내용"
         int likes "추천수"
@@ -297,8 +302,8 @@ erDiagram
         string company_name "기업 이름"
     }
 
-    USER ||--o{ POST : "작성"
-    USER ||--o{ COMMENT : "작성"
+    AUTH_USER ||--o{ POST : "작성"
+    AUTH_USER ||--o{ COMMENT : "작성"
     POST ||--o{ COMMENT : "게시글에 달린 댓글"
     STOCK ||--o{ POST : "종목 관련 게시글"
 ```
