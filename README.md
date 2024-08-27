@@ -132,7 +132,8 @@ stock_community/
 │   │   ├── accounts/
 │   │   │   ├── signup.html    # 회원가입
 │   │   │   ├── login.html     # 로그인
-│   │   │   └── profile.html   # 프로필 설정
+│   │   │   ├── profile.html   # 프로필 설정
+│   │   │   └── edit_profile.html   # 프로필 수정
 │   │   │
 |   │   └── forum/
 |   │       ├── forum_main.html       # 글 조회
