@@ -30,10 +30,10 @@
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
 | **stocks** | /stocks/search/ | stocks_search | stocks/stocks_search.html | 주식 검색 창 |
-| **stocks** | /stocks/str:symbol/ | stocks_intro | stocks/stocks_intro.html | 주식 소개 글 |
-| **stocks** | /stocks/str:symbol/news/ | stocks_news | stocks/stocks_news.html | 기업 관련 뉴스 |
-| **stocks** | /stocks/str:symbol/chart/ | stocks_chart | stocks/stocks_chart.html | 주가 차트 |
-| **stocks** | /stocks/str:symbol/financials/ | stocks_financials | stocks/stocks_financials.html | 기업 재무 정보 |
+| **stocks** | /stocks/str:ticker/ | stocks_intro | stocks/stocks_intro.html | 주식 소개 글 |
+| **stocks** | /stocks/str:ticker/news/ | stocks_news | stocks/stocks_news.html | 기업 관련 뉴스 |
+| **stocks** | /stocks/str:ticker/chart/ | stocks_chart | stocks/stocks_chart.html | 주가 차트 |
+| **stocks** | /stocks/str:ticker/financials/ | stocks_financials | stocks/stocks_financials.html | 기업 재무 정보 |
 
 #### Accounts URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
@@ -46,15 +46,15 @@
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
 | **forum** | /forum/ | forum_main | forum/forum_main.html | 주주 토론방 메인 |
-| **forum** | /forum/str:symbol/list/ | forum_list | forum/forum_list.html | 글 리스트 |
-| **forum** | /forum/str:symbol/create/ | post_create | forum/post_create.html | 글 작성 |
-| **forum** | /forum/str:symbol/int:post_id/ | post_read | forum/post_read.html | 글 읽기 |
-| **forum** | /forum/str:symbol/int:post_id/detail/ | post_detail | forum/post_detail.html | 글 추천, 조회수 |
-| **forum** | /forum/str:symbol/int:post_id/update/ | post_update | forum/post_update.html | 글 수정 |
-| **forum** | /forum/str:symbol/int:post_id/delete/ | post_delete | forum/post_delete.html | 글 삭제 |
-| **forum** | /forum/str:symbol/int:post_id/comments/ | post_comment_list | forum/post_comment_list.html | 댓글 리스트 |
-| **forum** | /forum/str:symbol/int:post_id/comments/create/ | post_comment_create | forum/post_comment_create.html | 댓글/대댓글 작성 |
-| **forum** | /forum/str:symbol/int:post_id/comments/int:comment_id/ | post_comment_detail | forum/post_comment_detail.html | 댓글 수정/삭제 |
+| **forum** | /forum/str:ticker/list/ | forum_list | forum/forum_list.html | 글 리스트 |
+| **forum** | /forum/str:ticker/create/ | post_create | forum/post_create.html | 글 작성 |
+| **forum** | /forum/str:ticker/int:post_id/ | post_read | forum/post_read.html | 글 읽기 |
+| **forum** | /forum/str:ticker/int:post_id/detail/ | post_detail | forum/post_detail.html | 글 추천, 조회수 |
+| **forum** | /forum/str:ticker/int:post_id/update/ | post_update | forum/post_update.html | 글 수정 |
+| **forum** | /forum/str:ticker/int:post_id/delete/ | post_delete | forum/post_delete.html | 글 삭제 |
+| **forum** | /forum/str:ticker/int:post_id/comments/ | post_comment_list | forum/post_comment_list.html | 댓글 리스트 |
+| **forum** | /forum/str:ticker/int:post_id/comments/create/ | post_comment_create | forum/post_comment_create.html | 댓글/대댓글 작성 |
+| **forum** | /forum/str:ticker/int:post_id/comments/int:comment_id/ | post_comment_detail | forum/post_comment_detail.html | 댓글 수정/삭제 |
 
 
 ## 3. 기능 명세서
@@ -132,7 +132,6 @@ stock_community/
 │   │   │   └── edit_profile.html   # 프로필 수정
 │   │   │
 |   │   └── forum/
-|   │       ├── forum_main.html       # 글 조회
 |   │       ├── forum_list.html       # 글 리스트
 |   │       ├── post_create.html      # 글 작성
 |   │       ├── post_read.html        # 글 읽기
@@ -311,3 +310,5 @@ erDiagram
 ## 8. 추가적으로 해야할 사항
 
 회원 닉네임 기능
+ERD 다시 그리기
+STOCKS SEARCH 부분 해결하기
