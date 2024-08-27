@@ -78,4 +78,3 @@ class StocksFinancialsView(TemplateView):
         context['balance_sheet'] = stock.balance_sheet
         context['cash_flow'] = stock.cashflow
         return context
-
