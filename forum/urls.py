@@ -3,6 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.ForumMainView.as_view(), name='forum_main'),  # 주주 토론방 메인
+    path('<str:ticker>/', views.ForumMainView.as_view(), name='forum_main'), # 특정 기업 토론방 메인
     path('list/', views.ForumListView.as_view(), name='forum_list'),  # 글 리스트
     path('create/', views.PostCreateView.as_view(), name='post_create'),  # 글 작성
     path('<int:post_id>/', views.PostReadView.as_view(), name='post_read'),  # 글 읽기
