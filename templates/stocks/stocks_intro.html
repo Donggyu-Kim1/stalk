@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ stock_info.longName }} - Intro{% endblock %}
+
+{% block content %}
+<h1>{{ stock_info.longName }} ({{ stock_info.symbol }})</h1>
+<p>Sector: {{ stock_info.sector }}</p>
+<p>Industry: {{ stock_info.industry }}</p>
+<p>Country: {{ stock_info.country }}</p>
+<p>Website: <a href="{{ stock_info.website }}">{{ stock_info.website }}</a></p>
+<h2>Business Summary</h2>
+<p>{{ stock_info.longBusinessSummary }}</p>
+{% endblock %}

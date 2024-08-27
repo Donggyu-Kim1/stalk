@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ stock_info.longName }} - Chart{% endblock %}
+
+{% block content %}
+<h1>{{ stock_info.longName }} - Stock Chart</h1>
+<div id="chart"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    var trace = {
+        x: {{ history.index|safe }},
+        y: {{ history.Close|safe }},
+        type: 'scatter'
+    };
+    var data = [trace];
+    var layout = {
+        title: '{{ stock_info.symbol }} Stock Price',
+        xaxis: { title: 'Date' },
+        yaxis: { title: 'Close Price' }
+    };
+    Plotly.newPlot('chart', data, layout);
+</script>
+{% endblock %}

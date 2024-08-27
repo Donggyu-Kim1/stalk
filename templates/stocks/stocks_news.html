@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ stock_info.longName }} - News{% endblock %}
+
+{% block content %}
+<h1>{{ stock_info.longName }} - Latest News</h1>
+{% for article in news %}
+    <h2><a href="{{ article.link }}">{{ article.title }}</a></h2>
+    <p>{{ article.publisher }} - {{ article.providerPublishTime|date:"F d, Y" }}</p>
+    <p>{{ article.summary }}</p>
+{% endfor %}
+{% endblock %}

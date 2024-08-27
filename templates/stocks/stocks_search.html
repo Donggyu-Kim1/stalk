@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Stock Search{% endblock %}
+
+{% block content %}
+<h1>Search for a Stock</h1>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="search_term" placeholder="Enter company name">
+    <button type="submit">Search</button>
+</form>
+{% endblock %}
