@@ -15,6 +15,7 @@ class StocksSearchView(TemplateView):
         search_term = request.POST.get('search_term')
         try:
             ticker = self.get_ticker_from_company_name(search_term)
+            stock = self.validate_stock(ticker)
             self.save_to_database(ticker, search_term)
             return redirect('stocks:intro', ticker=ticker)
         except Exception as e:
@@ -32,6 +33,12 @@ class StocksSearchView(TemplateView):
             max_tokens=60,
         )
         return response.choices[0].message['content'].strip()
+    
+    def validate_stock(self, ticker):
+        stock = yf.Ticker(ticker)
+        if not stock.info.get('symbol'):
+            raise ValueError("Invalid ticker")
+        return stock
 
     def save_to_database(self, ticker, search_term):
         stock_obj, created = Stock.objects.get_or_create(ticker=ticker, defaults={'company_name': search_term})
