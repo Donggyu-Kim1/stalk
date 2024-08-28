@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<a href="{% url 'stocks:search' %}" class="btn btn-secondary mb-3">Back to Search</a>
+<a href="{% url 'stocks:search' %}" class="btn btn-secondary mb-3">검색으로 돌아가기</a>
 
 <h1>{{ stock.company_name }} ({{ stock.ticker }})</h1>
-<p>Exchange: {{ stock.exchange }}</p>
+<p>거래소: {{ stock.exchange }}</p>
 
-<a href="{% url 'forum:forum_list' ticker=stock.ticker %}" class="btn btn-primary mb-3">Go to Discussion Forum</a>
+<a href="{% url 'forum:forum_list' ticker=stock.ticker %}" class="btn btn-primary mb-3">토론방 입장하기</a>
 
-<h2>Company Information</h2>
+<h2>기업 개요</h2>
 <p>{{ company_info }}</p>
 
-<h2>Stock Chart</h2>
+<h2>주식 차트</h2>
 <div id="chart"></div>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
@@ -34,7 +34,7 @@
     Plotly.newPlot('chart', [trace], layout);
 </script>
 
-<h2>News</h2>
+<h2>최신 뉴스</h2>
 {% if news %}
     <ul>
     {% for item in news %}
@@ -45,10 +45,10 @@
     {% endfor %}
     </ul>
 {% else %}
-    <p>No news available.</p>
+    <p>표시할 뉴스가 없습니다.</p>
 {% endif %}
 
-<h2>Financial Statements</h2>
+<h2>재무 정보</h2>
 {{ financials|safe }}
 
 {% endblock %}

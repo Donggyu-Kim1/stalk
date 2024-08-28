@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Stock Search</h1>
+<h1>주식 검색</h1>
 
 <a href="{% url 'profile' %}" class="btn btn-secondary">프로필 설정</a>
 
 <form method="get" action="{% url 'stocks:search' %}">
     <input type="text" name="q" value="{{ query }}" placeholder="Search stocks...">
-    <button type="submit">Search</button>
+    <button type="submit">검색</button>
 </form>
 
 {% if stocks %}
-    <h2>Search Results</h2>
+    <h2>검색 결과</h2>
     <ul>
     {% for stock in stocks %}
         <li>
