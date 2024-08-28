@@ -1,15 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<a href="{% url 'stocks:search' %}" class="btn btn-secondary mb-3">Back to Search</a>
+
 <h1>{{ stock.company_name }} ({{ stock.ticker }})</h1>
 <p>Exchange: {{ stock.exchange }}</p>
 
 <h2>Company Information</h2>
 <p>{{ company_info }}</p>
-
-<a href="{% url 'forum:forum_list' ticker=stock_info.symbol %}" class="btn btn-primary">
-    토론방 가기
-</a>
 
 <h2>Stock Chart</h2>
 <div id="chart"></div>

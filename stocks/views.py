@@ -6,7 +6,7 @@ import yfinance as yf
 
 class StocksSearchView(ListView):
     model = Stock
-    template_name = 'stocks/search.html'
+    template_name = 'stocks/stocks_search.html'
     context_object_name = 'stocks'
     paginate_by = 20
 
@@ -26,7 +26,7 @@ class StocksSearchView(ListView):
 
 class StockDetailView(DetailView):
     model = Stock
-    template_name = 'stocks/stock_detail.html'
+    template_name = 'stocks/stocks_detail.html'
     context_object_name = 'stock'
 
     def get_context_data(self, **kwargs):
