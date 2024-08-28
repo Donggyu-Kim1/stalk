@@ -3,19 +3,20 @@
 ## 1. 목표와 기능
 
 1.1 목표
-- 주식 투자를 위한 기본적인 기업 정보 제공
+- 미국 주식 투자를 위한 기본적인 기업 정보 제공
 - 기업별(미국에 상장된)로 사용자들끼리 블로그 형식의 정보 공유 공간 제공
 
 1.2 주요 기능
 - 주식 정보
     - 주가 차트
-    - 재무 정보 (주요 재무제표 and 재무비율)
+    - 재무 정보
     - 기업 소개
     - 기업 관련 뉴스(yahoo finance)
 
 - 토론방
     - 글 작성
     - 조회수, 추천, 즐겨찾기, 댓글 기능
+    - (주식은 내일? - 찬반 토론방)
 
 
 ## 2. URL 구조
@@ -29,26 +30,23 @@
 #### Stocks URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
-| **stocks** | /stocks/search/ | stocks_search | stocks/stocks_search.html | 주식 검색 창 |
-| **stocks** | /stocks/str:ticker/ | stocks_intro | stocks/stocks_intro.html | 주식 소개 글 |
-| **stocks** | /stocks/news/str:ticker/ | stocks_news | stocks/stocks_news.html | 기업 관련 뉴스 |
-| **stocks** | /stocks/chart/str:ticker/ | stocks_chart | stocks/stocks_chart.html | 주가 차트 |
-| **stocks** | /stocks/financials/str:ticker/ | stocks_financials | stocks/stocks_financials.html | 기업 재무 정보 |
+| **stocks** | /stocks/search/ | search | stocks/stocks_search.html | 주식 검색 창 |
+| **stocks** | /stocks/detail/str:pk/ | detail | stocks/stocks_detail.html | 주식 소개 글, 차트, 뉴스, 재무정보 |
 
 #### Accounts URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
-| **accounts** | /accounts/signup/ | accounts_signup | accounts/signup.html | 회원가입 |
-| **accounts** | /accounts/login/ | accounts_login | accounts/login.html | 로그인 |
-| **accounts** | /accounts/profile/ | accounts_profile | accounts/profile.html | 프로필 설정 |
+| **accounts** | /accounts/signup/ | signup | accounts/signup.html | 회원가입 |
+| **accounts** | /accounts/login/ | login | accounts/login.html | 로그인 |
+| **accounts** | /accounts/profile/ | profile | accounts/profile.html | 프로필 설정 |
+| **accounts** | /accounts/profile/edit/ | edit_profile | accounts/edit_profile.html | 프로필 수정 |
 
 #### Forum URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
-| **forum** | /forum/str:ticker/list/ | forum_list | forum/forum_list.html | 글 리스트 |
+| **forum** | /forum/str:ticker/ | forum_list | forum/forum_list.html | 글 리스트 |
 | **forum** | /forum/str:ticker/create/ | post_create | forum/post_create.html | 글 작성 |
 | **forum** | /forum/str:ticker/int:post_id/ | post_read | forum/post_read.html | 글 읽기 |
-| **forum** | /forum/str:ticker/int:post_id/detail/ | post_detail | forum/post_detail.html | 글 추천, 조회수 |
 | **forum** | /forum/str:ticker/int:post_id/update/ | post_update | forum/post_update.html | 글 수정 |
 | **forum** | /forum/str:ticker/int:post_id/delete/ | post_delete | forum/post_delete.html | 글 삭제 |
 | **forum** | /forum/str:ticker/int:post_id/comments/ | post_comment_list | forum/post_comment_list.html | 댓글 리스트 |
@@ -58,7 +56,7 @@
 
 ## 3. 기능 명세서
 1. 사용자 등록 기능
-    - 회원가입 : 아이디, 비밀번호, 이름, 이메일
+    - 회원가입 : 아이디, 비밀번호
     - 로그인
     - 사용자 정보 변경
 
@@ -75,7 +73,7 @@
     - 댓글
         - CRUD
         - 추천
-        - 대댓글 작성
+        - 댓글
     - 유효성 검사 : 광고, 악성 글 차단
     
 
@@ -89,23 +87,23 @@
 | | 로그인 | - | 로그인 기능 | ㅇ |
 | | 로그아웃 | - | 사용자 세션 종료 | ㅇ |
 | | 프로필 관리 | | 사용자 프로필 수정 | ㅇ |
-| 2. 주식 정보 | 주식 정보 BD 구축 | - | 기업 이름 검색 | |
-| | 기업 소개 | - | 기업에 대한 소개글 제공 | |
-| | 기업 관련 뉴스 | 뉴스 크롤링 | Yahoo Finance에서 최신 뉴스 크롤링 | |
-| | | 뉴스 표시 | 크롤링한 뉴스 표시, 없을 경우 'none' 출력 | |
-| | 주가 차트 | - | 주식의 가격 변동 차트 제공 | |
-| | 재무 정보 | 기본 재무 정보 | 주요 재무 정보 표로 제공 | |
-| | | 재무 비율 | 주요 재무 비율 표로 제공 | |
-| 3. 게시글 + 댓글 | 게시글 | CRUD | 게시글 생성, 조회, 수정, 삭제 기능 | |
-| | | 추천 | 게시글 추천 기능 | |
-| | | 조회수 | 게시글 조회수 기능 | |
-| | | 유효성 검사 | 광고, 악성 글 차단 | |
-| | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 | |
-| | | 추천 | 댓글 추천 | |
-| | | 대댓글 | 댓글 밑 대댓글 | |
-| 4. 마무리 | 구현 영상 | - | - | |
-| | README 파일 작성 | - | - | |
-| | 배포 | - | - | |
+| 2. 주식 정보 | 주식 정보 BD 구축 | - | 기업 이름 검색 | ㅇ |
+| | 기업 소개 | - | 기업에 대한 소개글 제공 | ㅇ |
+| | 기업 관련 뉴스 | 뉴스 크롤링 | Yahoo Finance에서 최신 뉴스 크롤링 | ㅇ |
+| | | 뉴스 표시 | 크롤링한 뉴스 표시 | ㅇ |
+| | 주가 차트 | - | 주식의 가격 변동 차트 제공 | x |
+| | 재무 정보 | 기본 재무 정보 | 주요 재무 정보 표로 제공 | ㅇ |
+| 3. 게시글 + 댓글 | 게시글 | CRUD | 게시글 생성, 조회, 수정, 삭제 기능 | ㅇ |
+| | | 추천 | 게시글 추천 기능 | x |
+| | | 조회수 | 게시글 조회수 기능 | ㅇ |
+| | | 유효성 검사 | 광고, 악성 글 차단 | x |
+| | | 투표 | 주식 상승/하락 투표 기능 | x |
+| | |  | 상승/하락별 채팅 창 | x |
+| | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 | x |
+| | | 추천 | 댓글 추천 | x |
+| 4. 마무리 | 구현 영상 | - | - | x |
+| | README 파일 작성 | - | - | x |
+| | 배포 | - | - | x |
     
 
 ## 4. 프로젝트 구조와 개발 일정
@@ -119,10 +117,7 @@ stock_community/
 ├── templates/
 │   │   ├── stocks/
 │   │   |   ├── stocks_search.html  # 주식 검색 창
-│   │   |   ├── stocks_intro.html   # 주식 소개 글
-│   │   |   ├── stocks_news.html    # 기업 관련 뉴스
-│   │   |   ├── stocks_chart.html   # 주가 차트
-│   │   |   └── stocks_financials.html  # 기업 재무 정보
+│   │   |   └── stocks_detail.html  # 기업 소개 글, 뉴스, 차트, 재무 정보
 |   |   |
 │   │   ├── accounts/
 │   │   │   ├── signup.html    # 회원가입
@@ -136,7 +131,6 @@ stock_community/
 |   │       ├── post_read.html        # 글 읽기
 |   │       ├── post_update.html      # 글 수정
 |   │       ├── post_delete.html      # 글 삭제
-|   │       ├── post_detail.html      # 글 추천, 조회수
 |   │       ├── post_comment_list.html     # 댓글 리스트
 |   │       ├── post_comment_create.html   # 댓글/대댓글 작성
 |   │       └── post_comment_detail.html   # 댓글 수정/삭제
@@ -151,7 +145,12 @@ stock_community/
 │   └── wsgi.py
 │
 ├── stocks/
+│   ├── management/
+│   |   └── commands/
+|   |       └── imports_stocks.py
 │   ├── migrations/
+|   |   ├── __init__.py
+|   |   └── 0001_initial.py
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
@@ -162,6 +161,7 @@ stock_community/
 │
 ├── accounts/
 │   ├── migrations/
+|   |   └── __init__.py
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
@@ -173,9 +173,12 @@ stock_community/
 │
 └── forum/
     ├── migrations/
+    |   ├── __init__.py
+    |   └── 0001_initial.py
     ├── __init__.py
     ├── admin.py
     ├── apps.py
+    ├── forms.py
     ├── models.py
     ├── tests.py
     ├── urls.py
@@ -203,16 +206,16 @@ gantt
 
     section 2. 주식 정보
     주식 티커 리스트     :2024-08-28, 1d
-    기업 소개          :2024-08-27, 1d
-    기업 관련 뉴스      :2024-08-27, 1d
-    주가 차트          :2024-08-27, 1d
-    재무 정보          :2024-08-27, 1d
+    기업 소개          :2024-08-27, 2d
+    기업 관련 뉴스      :2024-08-27, 2d
+    주가 차트          :2024-08-27, 3d
+    재무 정보          :2024-08-27, 2d
 
     section 3. 게시글 + 댓글
-    게시글 CRUD        :2024-08-27, 1d
-    게시글 추천/조회수   :2024-08-27, 1d
-    댓글 CRUD          :2024-08-27, 1d
-    댓글 추천/대댓글     :2024-08-27, 1d
+    게시글 CRUD        :2024-08-28, 1d
+    게시글 추천/조회수   :2024-08-28, 2d
+    댓글 CRUD          :2024-08-28, 1d
+    댓글 추천/대댓글     :2024-08-28, 2d
 
     section 4. 마무리
     구현 영상          :2024-08-30, 1d
@@ -269,33 +272,31 @@ erDiagram
     }
 
     POST {
-        int post_id PK "Primary Key"
+        bigint post_id PK "Primary Key"
         int user_id FK "작성자 (auth_user.id)"
-        int stock_id FK "연결된 주식 종목"
         string title "게시글 제목"
         text content "게시글 내용"
         int views "조회수"
-        int likes "추천수"
         datetime created_at "작성일"
         datetime updated_at "수정일"
+        string stock_ticker FK "연결된 종목 (stocks.ticker)"
     }
 
     COMMENT {
-        int comment_id PK "Primary Key"
-        int post_id FK "연결된 게시글"
+        bigint comment_id PK "Primary Key"
+        bigint post_id FK "연결된 게시글"
         int user_id FK "작성자 (auth_user.id)"
-        int parent_comment_id "대댓글의 경우 부모 댓글 ID"
         text content "댓글 내용"
-        int likes "추천수"
         datetime created_at "작성일"
         datetime updated_at "수정일"
     }
 
     STOCK {
-        int stock_id PK "Primary Key"
-        string ticker "종목 코드"
-        string name "기업 이름"
+        string ticker PK "Primary Key"
+        string company_name "기업 이름"
         string exchange "거래소"
+        datetime created_at "등록일"
+        datetime updated_at "수정일"
     }
 
     AUTH_USER ||--o{ POST : "작성"
@@ -309,6 +310,4 @@ erDiagram
 
 ## 8. 추가적으로 해야할 사항
 
-회원 닉네임 기능
-
-ERD 다시 그리기
+- Stock search에 프로필 설정 버튼 넣기
