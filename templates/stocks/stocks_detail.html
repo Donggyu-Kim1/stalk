@@ -6,6 +6,8 @@
 <h1>{{ stock.company_name }} ({{ stock.ticker }})</h1>
 <p>Exchange: {{ stock.exchange }}</p>
 
+<a href="{% url 'forum:forum_list' ticker=stock.ticker %}" class="btn btn-primary mb-3">Go to Discussion Forum</a>
+
 <h2>Company Information</h2>
 <p>{{ company_info }}</p>
 
