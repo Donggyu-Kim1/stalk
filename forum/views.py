@@ -1,10 +1,11 @@
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from .models import Post, Comment
 from stocks.models import Stock
-from .forms import PostForm, CommentForm  # 폼을 별도로 정의해야 합니다
+from .forms import PostForm, CommentForm
+
 
 class ForumMainView(ListView):
     model = Post
@@ -46,6 +47,25 @@ class PostReadView(DetailView):
         obj.save()
         return obj
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post=self.object).order_by('created_at')
+        context['form'] = CommentForm()  # 댓글 작성 폼 추가
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = self.object
+            comment.save()
+            return redirect('forum:post_read', ticker=self.kwargs['ticker'], post_id=self.object.pk)
+        context = self.get_context_data()
+        context['form'] = form
+        return self.render_to_response(context)
+
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
@@ -59,6 +79,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('forum:post_read', kwargs={'ticker': self.kwargs['ticker'], 'post_id': self.object.pk})
 
+
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'forum/post_delete.html'
@@ -70,6 +91,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy('forum:forum_list', kwargs={'ticker': self.kwargs['ticker']})
+
 
 class PostCommentListView(ListView):
     model = Comment
@@ -85,18 +107,6 @@ class PostCommentListView(ListView):
         context['post'] = self.post
         return context
 
-class PostCommentCreateView(LoginRequiredMixin, CreateView):
-    model = Comment
-    form_class = CommentForm
-    template_name = 'forum/post_comment_create.html'
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        form.instance.post = get_object_or_404(Post, pk=self.kwargs['post_id'])
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return reverse_lazy('forum:post_read', kwargs={'ticker': self.kwargs['ticker'], 'post_id': self.kwargs['post_id']})
 
 class PostCommentDetailView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment

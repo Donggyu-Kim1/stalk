@@ -46,11 +46,10 @@
 | -- | -- | -- | -- | -- |
 | **forum** | /forum/str:ticker/ | forum_list | forum/forum_list.html | 글 리스트 |
 | **forum** | /forum/str:ticker/create/ | post_create | forum/post_create.html | 글 작성 |
-| **forum** | /forum/str:ticker/int:post_id/ | post_read | forum/post_read.html | 글 읽기 |
+| **forum** | /forum/str:ticker/int:post_id/ | post_read | forum/post_read.html | 글 읽기, 댓글 작성 |
 | **forum** | /forum/str:ticker/int:post_id/update/ | post_update | forum/post_update.html | 글 수정 |
 | **forum** | /forum/str:ticker/int:post_id/delete/ | post_delete | forum/post_delete.html | 글 삭제 |
 | **forum** | /forum/str:ticker/int:post_id/comments/ | post_comment_list | forum/post_comment_list.html | 댓글 리스트 |
-| **forum** | /forum/str:ticker/int:post_id/comments/create/ | post_comment_create | forum/post_comment_create.html | 댓글/대댓글 작성 |
 | **forum** | /forum/str:ticker/int:post_id/comments/int:comment_id/ | post_comment_detail | forum/post_comment_detail.html | 댓글 수정/삭제 |
 
 
@@ -82,7 +81,7 @@
 | 기획 | 아이디어 기획 | - | 핵심 기능 설계 | ㅇ |
 | | WBS 작성 | - | mermaid로 프로젝트 단계 세분화 | ㅇ |
 | | ERD 그리기 | - | DB, 앱 flow 그리기 | ㅇ |
-| | 와이어프레임 | - | 앱 UI 설계 및 그리기 | |
+| | 와이어프레임 | - | 앱 UI 설계 및 그리기 | x |
 | 1. 사용자 등록 | 회원가입 | 기본 | 아이디, 비밀번호, 이름, 이메일 | ㅇ |
 | | 로그인 | - | 로그인 기능 | ㅇ |
 | | 로그아웃 | - | 사용자 세션 종료 | ㅇ |
@@ -128,11 +127,10 @@ stock_community/
 |   │   └── forum/
 |   │       ├── forum_list.html       # 글 리스트
 |   │       ├── post_create.html      # 글 작성
-|   │       ├── post_read.html        # 글 읽기
+|   │       ├── post_read.html        # 글 읽기, 댓글 작성
 |   │       ├── post_update.html      # 글 수정
 |   │       ├── post_delete.html      # 글 삭제
 |   │       ├── post_comment_list.html     # 댓글 리스트
-|   │       ├── post_comment_create.html   # 댓글/대댓글 작성
 |   │       └── post_comment_detail.html   # 댓글 수정/삭제
 |   |
 │   └── base.html   # 기본 템플릿
