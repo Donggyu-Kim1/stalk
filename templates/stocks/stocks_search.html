@@ -1,17 +1,45 @@
 {% extends 'base.html' %}
 
-{% block title %}주식 검색하기{% endblock %}
-
 {% block content %}
-<h1>주식 검색</h1>
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="search_term" placeholder="주식 이름을 검색하세요">
-    <button type="submit">검색</button>
+<h1>Stock Search</h1>
+
+<form method="get" action="{% url 'stocks:search' %}">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search stocks...">
+    <button type="submit">Search</button>
 </form>
 
-<a href="{% url 'profile' %}">
-    <button type="button">프로필 설정</button>
-</a>
+{% if stocks %}
+    <h2>Search Results</h2>
+    <ul>
+    {% for stock in stocks %}
+        <li>
+            <a href="{% url 'stocks:detail' stock.ticker %}">
+                {{ stock.ticker }} - {{ stock.company_name }} ({{ stock.exchange }})
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
 
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&q={{ query }}">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&q={{ query }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&q={{ query }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&q={{ query }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% else %}
+    <p>No stocks found.</p>
+{% endif %}
 {% endblock %}

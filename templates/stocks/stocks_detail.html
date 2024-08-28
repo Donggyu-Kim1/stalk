@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ stock.company_name }} ({{ stock.ticker }})</h1>
+<p>Exchange: {{ stock.exchange }}</p>
+
+<h2>Company Information</h2>
+<p>{{ company_info }}</p>
+
+<a href="{% url 'forum:forum_list' ticker=stock_info.symbol %}" class="btn btn-primary">
+    토론방 가기
+</a>
+
+<h2>Stock Chart</h2>
+<div id="chart"></div>
+
+<h2>News</h2>
+{% if news %}
+    <ul>
+    {% for item in news %}
+        <li>
+            <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+            <p>{{ item.publisher }} - {{ item.providerPublishTime|date:"F d, Y" }}</p>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No news available.</p>
+{% endif %}
+
+<h2>Financial Statements</h2>
+{{ financials|safe }}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    var data = JSON.parse('{{ chart_data|safe }}');
+    var dates = Object.keys(data);
+    var prices = Object.values(data);
+
+    var trace = {
+        x: dates,
+        y: prices,
+        type: 'scatter'
+    };
+
+    var layout = {
+        title: 'Stock Price (Last Month)',
+        xaxis: {title: 'Date'},
+        yaxis: {title: 'Price'}
+    };
+
+    Plotly.newPlot('chart', [trace], layout);
+</script>
+{% endblock %}

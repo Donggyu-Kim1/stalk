@@ -4,7 +4,7 @@
 
 1.1 목표
 - 주식 투자를 위한 기본적인 기업 정보 제공
-- 기업별로 사용자들끼리 블로그 형식의 정보 공유 공간 제공
+- 기업별(미국에 상장된)로 사용자들끼리 블로그 형식의 정보 공유 공간 제공
 
 1.2 주요 기능
 - 주식 정보
@@ -202,7 +202,7 @@ gantt
     프로필 관리         :2024-08-27, 1d
 
     section 2. 주식 정보
-    생성형 AI 연결     :2024-08-27, 1h
+    주식 티커 리스트     :2024-08-28, 1d
     기업 소개          :2024-08-27, 1d
     기업 관련 뉴스      :2024-08-27, 1d
     주가 차트          :2024-08-27, 1d
@@ -293,8 +293,9 @@ erDiagram
 
     STOCK {
         int stock_id PK "Primary Key"
-        string stock_symbol "종목 코드"
-        string company_name "기업 이름"
+        string ticker "종목 코드"
+        string name "기업 이름"
+        string exchange "거래소"
     }
 
     AUTH_USER ||--o{ POST : "작성"
@@ -309,5 +310,5 @@ erDiagram
 ## 8. 추가적으로 해야할 사항
 
 회원 닉네임 기능
+
 ERD 다시 그리기
-STOCKS SEARCH 부분 해결하기

@@ -1,65 +1,56 @@
-from django.views.generic import TemplateView
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Stock, StockSearch
-import openai
+from django.views.generic import ListView, DetailView
+from django.db.models import Q
+from .models import Stock
 import yfinance as yf
-import os
-
-openai.api_key = os.getenv('OPEN_API_KEY')
-
-class StocksSearchView(TemplateView):
-    template_name = 'stocks/stocks_search.html'
 
 
-    def validate_stock(self, ticker):
-        stock = yf.Ticker(ticker)
-        if not stock.info.get('symbol'):
-            raise ValueError("Invalid ticker")
-        return stock
+class StocksSearchView(ListView):
+    model = Stock
+    template_name = 'stocks/search.html'
+    context_object_name = 'stocks'
+    paginate_by = 20
 
-    def save_to_database(self, ticker, search_term):
-        stock_obj, created = Stock.objects.get_or_create(ticker=ticker, defaults={'company_name': search_term})
-        StockSearch.objects.create(stock=stock_obj, search_term=search_term)
-
-class StocksIntroView(TemplateView):
-    template_name = 'stocks/stocks_intro.html'
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if query:
+            return Stock.objects.filter(
+                Q(ticker__icontains=query) | 
+                Q(company_name__icontains=query)
+            ).order_by('ticker')
+        return Stock.objects.all().order_by('ticker')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        ticker = self.kwargs.get('ticker')
-        stock = yf.Ticker(ticker)
-        context['stock_info'] = stock.info
+        context['query'] = self.request.GET.get('q', '')
         return context
 
-class StocksNewsView(TemplateView):
-    template_name = 'stocks/stocks_news.html'
+class StockDetailView(DetailView):
+    model = Stock
+    template_name = 'stocks/stock_detail.html'
+    context_object_name = 'stock'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        ticker = self.kwargs.get('ticker')
+        ticker = self.object.ticker
+
+        # Yahoo Finance에서 주식 정보 가져오기
         stock = yf.Ticker(ticker)
+
+        # 기업 소개
+        context['company_info'] = stock.info.get('longBusinessSummary', 'No information available')
+
+        # 뉴스
         context['news'] = stock.news
-        return context
 
-class StocksChartView(TemplateView):
-    template_name = 'stocks/stocks_chart.html'
+        # 차트 데이터
+        hist = stock.history(period="1mo")
+        context['chart_data'] = hist['Close'].to_json(date_format='iso')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        ticker = self.kwargs.get('ticker')
-        stock = yf.Ticker(ticker)
-        context['history'] = stock.history(period="1y")
-        return context
+        # 재무제표
+        financials = stock.financials
+        if not financials.empty:
+            context['financials'] = financials.to_html(classes='table table-striped')
+        else:
+            context['financials'] = "No financial data available"
 
-class StocksFinancialsView(TemplateView):
-    template_name = 'stocks/stocks_financials.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        ticker = self.kwargs.get('ticker')
-        stock = yf.Ticker(ticker)
-        context['financials'] = stock.financials
-        context['balance_sheet'] = stock.balance_sheet
-        context['cash_flow'] = stock.cashflow
         return context

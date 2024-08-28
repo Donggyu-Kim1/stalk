@@ -10,7 +10,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(default=timezone.now)  # 작성 시간
     updated_at = models.DateTimeField(auto_now=True)  # 수정 시간
     views = models.PositiveIntegerField(default=0)  # 조회수
-    stock_ticker = models.ForeignKey('stocks.Stock', on_delete=models.CASCADE, db_column='stock_id')  # 주식 티커
+    stock_ticker = models.ForeignKey('stocks.Stock', on_delete=models.CASCADE, to_field='ticker')
 
     def __str__(self):
         return self.title
