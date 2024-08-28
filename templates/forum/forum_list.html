@@ -43,4 +43,8 @@
 {% endif %}
 
 <a href="{% url 'stocks:detail' pk=stock.ticker %}" class="btn btn-secondary mt-3">주식 상세 정보로 돌아가기</a>
+<form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
 {% endblock %}

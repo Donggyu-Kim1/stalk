@@ -44,4 +44,8 @@
 {% else %}
     <p>No stocks found.</p>
 {% endif %}
+<form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
 {% endblock %}
