@@ -12,7 +12,13 @@ class ForumMainView(ListView):
     context_object_name = 'posts'
 
     def get_queryset(self):
-        return Post.objects.filter(stock_ticker=self.kwargs['ticker'])
+        ticker = self.kwargs.get('ticker')
+        return Post.objects.filter(stock_ticker=ticker)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['ticker'] = self.kwargs.get('ticker')
+        return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post

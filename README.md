@@ -31,9 +31,9 @@
 | -- | -- | -- | -- | -- |
 | **stocks** | /stocks/search/ | stocks_search | stocks/stocks_search.html | 주식 검색 창 |
 | **stocks** | /stocks/str:ticker/ | stocks_intro | stocks/stocks_intro.html | 주식 소개 글 |
-| **stocks** | /stocks/str:ticker/news/ | stocks_news | stocks/stocks_news.html | 기업 관련 뉴스 |
-| **stocks** | /stocks/str:ticker/chart/ | stocks_chart | stocks/stocks_chart.html | 주가 차트 |
-| **stocks** | /stocks/str:ticker/financials/ | stocks_financials | stocks/stocks_financials.html | 기업 재무 정보 |
+| **stocks** | /stocks/news/str:ticker/ | stocks_news | stocks/stocks_news.html | 기업 관련 뉴스 |
+| **stocks** | /stocks/chart/str:ticker/ | stocks_chart | stocks/stocks_chart.html | 주가 차트 |
+| **stocks** | /stocks/financials/str:ticker/ | stocks_financials | stocks/stocks_financials.html | 기업 재무 정보 |
 
 #### Accounts URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
@@ -45,7 +45,6 @@
 #### Forum URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
-| **forum** | /forum/ | forum_main | forum/forum_main.html | 주주 토론방 메인 |
 | **forum** | /forum/str:ticker/list/ | forum_list | forum/forum_list.html | 글 리스트 |
 | **forum** | /forum/str:ticker/create/ | post_create | forum/post_create.html | 글 작성 |
 | **forum** | /forum/str:ticker/int:post_id/ | post_read | forum/post_read.html | 글 읽기 |

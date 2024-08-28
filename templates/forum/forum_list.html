@@ -9,7 +9,7 @@
     <ul>
         {% for post in posts %}
             <li>
-                <a href="{% url 'forum:post_read' ticker=ticker post_id=post.id %}">
+                <a href="{% url 'forum:post_read' ticker=ticker post_id=post.post_id %}">
                     {{ post.title }} by {{ post.author }} (Views: {{ post.views }})
                 </a>
             </li>

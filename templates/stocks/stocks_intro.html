@@ -3,11 +3,12 @@
 {% block title %}{{ stock_info.longName }} 소개{% endblock %}
 
 {% block content %}
-<h1>{{ stock_info.longName }} ({{ stock_info.symbol }})</h1>
-<p>Sector: {{ stock_info.sector }}</p>
-<p>Industry: {{ stock_info.industry }}</p>
-<p>Country: {{ stock_info.country }}</p>
-<p>Website: <a href="{{ stock_info.website }}">{{ stock_info.website }}</a></p>
+<h1>{{ stock_info.longName }}</h1>
+<p>티커: {{ stock_info.symbol }}</p>
+<p>섹터: {{ stock_info.sector }}</p>
+<p>산업: {{ stock_info.industry }}</p>
+<p>국가: {{ stock_info.country }}</p>
+<p>홈페이지: <a href="{{ stock_info.website }}">{{ stock_info.website }}</a></p>
 
 <a href="{% url 'stocks:news' ticker=stock_info.symbol %}">뉴스 보기</a>
 <a href="{% url 'stocks:chart' ticker=stock_info.symbol %}">차트 보기</a>
