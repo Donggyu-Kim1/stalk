@@ -8,6 +8,14 @@
 <p>Industry: {{ stock_info.industry }}</p>
 <p>Country: {{ stock_info.country }}</p>
 <p>Website: <a href="{{ stock_info.website }}">{{ stock_info.website }}</a></p>
+
+<a href="{% url 'stocks:news' ticker=stock_info.symbol %}">뉴스 보기</a>
+<a href="{% url 'stocks:chart' ticker=stock_info.symbol %}">차트 보기</a>
+<a href="{% url 'stocks:financials' ticker=stock_info.symbol %}">재무 정보 보기</a>
+<a href="{% url 'forum:forum_list' ticker=stock_info.symbol %}" class="btn btn-primary">
+    토론방 가기
+</a>
+
 <h2>Business Summary</h2>
 <p>{{ stock_info.longBusinessSummary }}</p>
 {% endblock %}
