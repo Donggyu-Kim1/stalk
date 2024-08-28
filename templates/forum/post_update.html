@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>포스트 수정하기</h1>
+<h1>글 수정</h1>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">저장</button>
+    <button type="submit" class="btn btn-primary">수정</button>
 </form>
 
-<a href="{% url 'forum:post_read' ticker=ticker post_id=post.id %}">취소하기</a>
+<a href="{% url 'forum:post_read' ticker=view.kwargs.ticker post_id=view.kwargs.post_id %}" class="btn btn-secondary mt-3">취소</a>
 {% endblock %}

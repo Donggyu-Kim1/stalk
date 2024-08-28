@@ -2,15 +2,23 @@
 
 {% block content %}
 <h1>{{ post.title }}</h1>
-<p>By {{ post.author }} on {{ post.created_at }}</p>
-<p>{{ post.content }}</p>
 
-<a href="{% url 'forum:post_update' ticker=ticker post_id=post.id %}">포스트 수정하기</a>
-<a href="{% url 'forum:post_delete' ticker=ticker post_id=post.id %}">포스트 삭제</a>
+<p class="text-muted">
+    작성자: {{ post.author }} | 작성일: {{ post.created_at|date:"Y-m-d H:i" }} | 조회수: {{ post.views }}
+</p>
 
-<h2>댓글</h2>
+<div class="mt-3">
+    {{ post.content|linebreaks }}
+</div>
+
+<div class="mt-3">
+    <a href="{% url 'forum:post_update' ticker=post.stock_ticker.ticker post_id=post.post_id %}" class="btn btn-primary">수정</a>
+    <a href="{% url 'forum:post_delete' ticker=post.stock_ticker.ticker post_id=post.post_id %}" class="btn btn-danger">삭제</a>
+    <a href="{% url 'forum:post_comment_create' ticker=post.stock_ticker.ticker post_id=post.post_id %}" class="btn btn-success">댓글 작성</a>
+</div>
+
+<h2 class="mt-4">댓글</h2>
 {% include 'forum/post_comment_list.html' %}
-<a href="{% url 'forum:post_comment_create' ticker=ticker post_id=post.id %}">댓글 작성하기</a>
 
-<a href="{% url 'forum:forum_list' ticker=ticker %}">돌아가기</a>
+<a href="{% url 'forum:forum_list' ticker=post.stock_ticker.ticker %}" class="btn btn-secondary mt-3">목록으로 돌아가기</a>
 {% endblock %}

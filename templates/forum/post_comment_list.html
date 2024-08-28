@@ -1,12 +1,17 @@
 {% if comments %}
-    <ul>
+    <ul class="list-group">
         {% for comment in comments %}
-            <li>
-                {{ comment.author }}: {{ comment.content }}
-                <a href="{% url 'forum:post_comment_detail' ticker=ticker post_id=post.id comment_id=comment.id %}">수정</a>
+            <li class="list-group-item">
+                <p>{{ comment.content }}</p>
+                <small class="text-muted">
+                    by {{ comment.author }} | {{ comment.created_at|date:"Y-m-d H:i" }}
+                    {% if user == comment.author %}
+                        | <a href="{% url 'forum:post_comment_detail' ticker=view.kwargs.ticker post_id=post.post_id comment_id=comment.id %}">수정/삭제</a>
+                    {% endif %}
+                </small>
             </li>
         {% endfor %}
     </ul>
 {% else %}
-    <p>댓글이 아직 존재하지 않습니다.</p>
+    <p>아직 댓글이 없습니다.</p>
 {% endif %}

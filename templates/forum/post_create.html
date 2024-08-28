@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>새 포스트 작성하기</h1>
+<h1>새 글 작성</h1>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">제출하기</button>
+    <button type="submit" class="btn btn-primary">작성</button>
 </form>
 
-<a href="{% url 'forum:forum_list' ticker=ticker %}">돌아가기</a>
+<a href="{% url 'forum:forum_list' ticker=view.kwargs.ticker %}" class="btn btn-secondary mt-3">목록으로 돌아가기</a>
 {% endblock %}

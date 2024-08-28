@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>{{ post.title }}</h1>
-<p>By {{ post.author }} on {{ post.created_at }} | 조회수: {{ post.views }}</p>
-<p>{{ post.content }}</p>
-
-<a href="{% url 'forum:forum_list' ticker=ticker %}">돌아가기</a>
-{% endblock %}
