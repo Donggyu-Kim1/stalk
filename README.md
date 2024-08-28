@@ -308,4 +308,6 @@ erDiagram
 
 ## 8. 추가적으로 해야할 사항
 
-- Stock search에 프로필 설정 버튼 넣기
+- 댓글 수정/삭제 기능 추가 구현
+- stock chart 구현
+- 세부사항 검토 및 ui 구성

@@ -3,6 +3,8 @@
 {% block content %}
 <h1>Stock Search</h1>
 
+<a href="{% url 'profile' %}" class="btn btn-secondary">프로필 설정</a>
+
 <form method="get" action="{% url 'stocks:search' %}">
     <input type="text" name="q" value="{{ query }}" placeholder="Search stocks...">
     <button type="submit">Search</button>
