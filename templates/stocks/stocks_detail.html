@@ -13,6 +13,26 @@
 
 <h2>Stock Chart</h2>
 <div id="chart"></div>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    var data = JSON.parse('{{ chart_data|escapejs }}');
+    var dates = Object.keys(data);
+    var prices = Object.values(data);
+
+    var trace = {
+        x: dates,
+        y: prices,
+        type: 'scatter'
+    };
+
+    var layout = {
+        title: 'Stock Price (Last Month)',
+        xaxis: {title: 'Date'},
+        yaxis: {title: 'Price'}
+    };
+
+    Plotly.newPlot('chart', [trace], layout);
+</script>
 
 <h2>News</h2>
 {% if news %}

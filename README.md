@@ -50,8 +50,8 @@
 | **forum** | /forum/str:ticker/int:post_id/update/ | post_update | forum/post_update.html | 글 수정 |
 | **forum** | /forum/str:ticker/int:post_id/delete/ | post_delete | forum/post_delete.html | 글 삭제 |
 | **forum** | /forum/str:ticker/int:post_id/comments/ | post_comment_list | forum/post_comment_list.html | 댓글 리스트 |
-| **forum** | /forum/str:ticker/int:post_id/comments/int:comment_id/ | post_comment_detail | forum/post_comment_detail.html | 댓글 수정/삭제 |
-
+| **forum** | /forum/str:ticker/int:post_id/comments/int:comment_id/update | post_comment_update | forum/post_comment_update.html | 댓글 수정 |
+| **forum** | /forum/str:ticker/int:post_id/comments/int:comment_id/delete | post_comment_delete | forum/post_comment_delete.html | 댓글 삭제 |
 
 ## 3. 기능 명세서
 1. 사용자 등록 기능
@@ -90,7 +90,7 @@
 | | 기업 소개 | - | 기업에 대한 소개글 제공 | ㅇ |
 | | 기업 관련 뉴스 | 뉴스 크롤링 | Yahoo Finance에서 최신 뉴스 크롤링 | ㅇ |
 | | | 뉴스 표시 | 크롤링한 뉴스 표시 | ㅇ |
-| | 주가 차트 | - | 주식의 가격 변동 차트 제공 | x |
+| | 주가 차트 | - | 주식의 가격 변동 차트 제공 | ㅇ |
 | | 재무 정보 | 기본 재무 정보 | 주요 재무 정보 표로 제공 | ㅇ |
 | 3. 게시글 + 댓글 | 게시글 | CRUD | 게시글 생성, 조회, 수정, 삭제 기능 | ㅇ |
 | | | 추천 | 게시글 추천 기능 | x |
@@ -131,7 +131,8 @@ stock_community/
 |   │       ├── post_update.html      # 글 수정
 |   │       ├── post_delete.html      # 글 삭제
 |   │       ├── post_comment_list.html     # 댓글 리스트
-|   │       └── post_comment_detail.html   # 댓글 수정/삭제
+|   │       ├── post_comment_update.html   # 댓글 수정
+|   |       └── post_comment_delete.html   # 댓글 삭제
 |   |
 │   └── base.html   # 기본 템플릿
 |
@@ -308,6 +309,4 @@ erDiagram
 
 ## 8. 추가적으로 해야할 사항
 
-- 댓글 수정/삭제 기능 추가 구현
-- stock chart 구현
 - 세부사항 검토 및 ui 구성
