@@ -108,10 +108,10 @@ class PostCommentListView(ListView):
         return context
 
 
-class PostCommentDetailView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PostCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
-    form_class = CommentForm
-    template_name = 'forum/post_comment_detail.html'
+    fields = ['content']
+    template_name = 'forum/post_comment_update.html'
     pk_url_kwarg = 'comment_id'
 
     def test_func(self):
@@ -119,4 +119,23 @@ class PostCommentDetailView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
         return self.request.user == comment.author
 
     def get_success_url(self):
-        return reverse_lazy('forum:post_read', kwargs={'ticker': self.kwargs['ticker'], 'post_id': self.object.post.pk})
+        return reverse_lazy('forum:post_read', kwargs={
+            'ticker': self.object.post.stock_ticker.ticker,
+            'post_id': self.object.post.post_id
+        })
+
+
+class PostCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'forum/post_comment_delete.html'
+    pk_url_kwarg = 'comment_id'
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+
+    def get_success_url(self):
+        return reverse_lazy('forum:post_read', kwargs={
+            'ticker': self.object.post.stock_ticker.ticker,
+            'post_id': self.object.post.post_id
+        })

@@ -6,7 +6,8 @@
                 <small class="text-muted">
                     by {{ comment.author }} | {{ comment.created_at|date:"Y-m-d H:i" }}
                     {% if user == comment.author %}
-                        | <a href="{% url 'forum:post_comment_detail' ticker=view.kwargs.ticker post_id=post.post_id comment_id=comment.id %}">수정/삭제</a>
+                        | <a href="{% url 'forum:post_comment_update' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=comment.id %}">수정</a>
+                        | <a href="{% url 'forum:post_comment_delete' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=comment.id %}">삭제</a>
                     {% endif %}
                 </small>
             </li>
