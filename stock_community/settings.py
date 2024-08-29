@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'accounts',
     'forum',
     'stocks',
+    'portfolio',
 ]
 
 
