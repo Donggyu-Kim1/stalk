@@ -13,6 +13,7 @@
         {% block content %}
             {% if user.is_authenticated %}
                 <a href="{% url 'stocks:search' %}" class="btn">주식 검색 페이지로 이동</a>
+                <a href="{% url 'portfolio_list' %}" class="btn">포트폴리오 만들기</a>
             {% else %}
                 <nav>
                     <ul>

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ portfolio.name }} 포트폴리오{% endblock %}
+
+{% block content %}
+<h2>{{ portfolio.name }} 포트폴리오</h2>
+
+<p><strong>수익률:</strong> {{ profit_rate }}%</p>
+
+<h3>산업 섹터 비율</h3>
+<ul>
+    {% for sector, value in sector_distribution.items %}
+        <li>{{ sector }}: {{ value }}</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'portfolio_update' portfolio.pk %}" class="btn">포트폴리오 수정</a>
+<a href="{% url 'portfolio_delete' portfolio.pk %}" class="btn">포트폴리오 삭제</a>
+<a href="{% url 'portfolio_list' %}" class="btn">목록으로 돌아가기</a>
+{% endblock %}
