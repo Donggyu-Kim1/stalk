@@ -74,7 +74,8 @@ class PostReadView(DetailView):
             comment.post = self.object
             parent_id = request.POST.get('parent_id')
             if parent_id:
-                comment.parent = Comment.objects.get(id=parent_id)
+                parent_comment = get_object_or_404(Comment, id=parent_id)
+                comment.parent = parent_comment
             comment.save()
             return redirect('forum:post_read', ticker=self.kwargs['ticker'], post_id=self.object.pk)
         context = self.get_context_data()
