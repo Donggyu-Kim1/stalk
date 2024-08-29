@@ -7,15 +7,15 @@
     작성자: {{ post.author }} | 작성일: {{ post.created_at|date:"Y-m-d H:i" }} | 조회수: {{ post.views }}
 </p>
 
+{% if post.image %}
+    <div class="mt-3">
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="img-fluid">
+    </div>
+{% endif %}
+
 <div class="mt-3">
     {{ post.content|linebreaks }}
 </div>
-
-{% if post.image %}
-    <div class="mt-3">
-        <img src="{{ post.image.url }}" alt="Post image" class="img-fluid">
-    </div>
-{% endif %}
 
 <div class="mt-3">
     <a href="{% url 'forum:post_update' ticker=post.stock_ticker.ticker post_id=post.post_id %}" class="btn btn-primary">수정</a>
