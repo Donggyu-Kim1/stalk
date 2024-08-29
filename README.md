@@ -5,6 +5,7 @@
 1.1 목표
 - 미국 주식 투자를 위한 기본적인 기업 정보 제공
 - 기업별(미국에 상장된)로 사용자들끼리 블로그 형식의 정보 공유 공간 제공
+- 주식 포트폴리오 만들어보기
 
 1.2 주요 기능
 - 주식 정보
@@ -15,9 +16,11 @@
 
 - 토론방
     - 글 작성
-    - 조회수, 추천, 즐겨찾기, 댓글 기능
-    - (주식은 내일? - 찬반 토론방)
+    - 조회수, 댓글 기능
 
+- 포트폴리오
+    - 포트폴리오 생성
+    - 포트폴리오 수익률
 
 ## 2. URL 구조
 
@@ -38,6 +41,7 @@
 | -- | -- | -- | -- | -- |
 | **accounts** | /accounts/signup/ | signup | accounts/signup.html | 회원가입 |
 | **accounts** | /accounts/login/ | login | accounts/login.html | 로그인 |
+| **accounts** | /accounts/logout/ | logout | | 로그아웃 |
 | **accounts** | /accounts/profile/ | profile | accounts/profile.html | 프로필 설정 |
 | **accounts** | /accounts/profile/edit/ | edit_profile | accounts/edit_profile.html | 프로필 수정 |
 
@@ -57,10 +61,12 @@
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
 | **portfolio** | /portfolio/list/ | portfolio_list | portfolio/portfolio_list.html | 포트폴리오 리스트 |
+| **portfolio** | /portfolio/search/ | portfolio_search | | 주식 검색 |
 | **portfolio** | /portfolio/create/ | portfolio_create | portfolio/portfolio_create.html | 포트폴리오 만들기 |
-| **portfolio** | /portfolio/read/ | portfolio_read | portfolio/portfolio_read.html | 포트폴리오 결과 |
-| **portfolio** | /portfolio/update/ | portfolio_update | portfolio/portfolio_update.html | 포트폴리오 수정 |
-| **portfolio** | /portfolio/delete/ | portfolio_delete | portfolio/portfolio_delete.html | 포트폴리오 삭제 |
+| **portfolio** | /portfolio/add_stock/ | add_stock_to_portfolio |  | 포트폴리오에 들어갈 주식 추가 |
+| **portfolio** | /portfolio/int:pk/ | portfolio_read | portfolio/portfolio_read.html | 포트폴리오 결과 |
+| **portfolio** | /portfolio/update/int:pk/ | portfolio_update | portfolio/portfolio_update.html | 포트폴리오 수정 |
+| **portfolio** | /portfolio/delete/int:pk/ | portfolio_delete | portfolio/portfolio_delete.html | 포트폴리오 삭제 |
 
 
 ## 3. 기능 명세서
@@ -110,9 +116,7 @@
 | | 번역 | - | stocks_detail 부분 영어 -> 한국어 번역 | ㅇ |
 | 3. 게시글 + 댓글 | 게시글 | CRUD | 게시글 생성, 조회, 수정, 삭제 기능 | ㅇ |
 | | | 사진 | 사진 첨부 기능 | ㅇ |
-| | | 좋아요 | 게시글 좋아요 기능 | x |
 | | | 조회수 | 게시글 조회수 기능 | ㅇ |
-| | | 유효성 검사 | 광고, 악성 글 차단 | x |
 | | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 | ㅇ |
 | 4. 포트폴리오 | 포트폴리오 |  | 포트폴리오 CRUD |  |
 | | 포트폴리오 |  | 포트폴리오 그래프 기능 |  |
@@ -140,16 +144,23 @@ stock_community/
 │   │   │   ├── profile.html   # 프로필 설정
 │   │   │   └── edit_profile.html   # 프로필 수정
 │   │   │
-|   │   └── forum/
-|   │       ├── forum_list.html       # 글 리스트
-|   │       ├── post_create.html      # 글 작성
-|   │       ├── post_read.html        # 글 읽기, 댓글 작성
-|   │       ├── post_update.html      # 글 수정
-|   │       ├── post_delete.html      # 글 삭제
-|   │       ├── post_comment_list.html     # 댓글 리스트
-|   │       ├── post_comment_update.html   # 댓글 수정
-|   |       └── post_comment_delete.html   # 댓글 삭제
-|   |
+|   │   ├── forum/
+|   │   │   ├── forum_list.html       # 글 리스트
+|   │   │   ├── post_create.html      # 글 작성
+|   │   │   ├── post_read.html        # 글 읽기, 댓글 작성
+|   │   │   ├── post_update.html      # 글 수정
+|   │   │   ├── post_delete.html      # 글 삭제
+|   │   │   ├── post_comment_list.html     # 댓글 리스트
+|   │   │   ├── post_comment_update.html   # 댓글 수정
+|   |   │   └── post_comment_delete.html   # 댓글 삭제
+|   |   │
+│   │   ├── portfolio/
+│   │       ├── portfolio_list.html    # 포트폴리오 리스트
+│   │       ├── portfolio_create.html    # 포트폴리오 생성
+│   │       ├── portfolio_read.html     # 포트폴리오 결과
+│   │       ├── portfolio_update.html   # 포트폴리오 수정
+│   │       └── portfolio_delete.html   # 포트폴리오 삭제
+│   │
 │   └── base.html   # 기본 템플릿
 |
 ├── stock_community/
@@ -186,11 +197,24 @@ stock_community/
 │   ├── urls.py
 │   └── views.py
 │
-└── forum/
+├── forum/
+│   ├── migrations/
+│   |   ├── __init__.py
+│   |   ├── 0001_initial.py
+│   |   └── 0002_post_image.py
+│   ├── __init__.py
+│   ├── admin.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── tests.py
+│   ├── urls.py
+│   └── views.py
+│
+└── portfolio/
     ├── migrations/
     |   ├── __init__.py
-    |   ├── 0001_initial.py
-    |   └── 0002_post_image.py
+    |   └── 0001_initial.py
     ├── __init__.py
     ├── admin.py
     ├── apps.py
@@ -212,7 +236,7 @@ gantt
     아이디어 기획      :2024-08-26, 1d
     WBS 작성          :2024-08-26, 1d
     ERD 그리기         :2024-08-26, 1d
-    와이어프레임        :2024-08-29, 1d
+    와이어프레임        :2024-08-30, 1d
 
     section 1. 사용자 등록
     회원가입           :2024-08-27, 1d
@@ -233,12 +257,17 @@ gantt
     게시글 조회수       :2024-08-28, 1d
     댓글 CRUD          :2024-08-28, 1d
     유효성 검사        :2024-08-29, 1d
+    
+    section 4. 포트폴리오
+    포트폴리오 리스트        :2024-08-29, 2d
+    포트폴리오 CUD       :2024-08-29, 2d
+    포트폴리오 결과         :2024-08-29, 2d
 
-    section 4. 마무리
-    UI                :2024-08-29, 1d
+    section 5. 마무리
+    UI                :2024-08-30, 1d
     구현 영상          :2024-08-30, 1d
-    README 파일 작성   :2024-08-30, 1d
-    배포              :2024-08-31, 1d
+    README 파일 작성   :2024-09-01, 1d
+    배포              :2024-09-01, 1d
 ```
 
 
@@ -247,25 +276,33 @@ gantt
 ### 5.1 화면 flow
 
 ```mermaid
-    graph TD
-        A[로그인 화면] --> B{로그인 성공?}
-        B -->|성공| C[주식 검색 창]
-        B -->|실패| A
-        C --> D[주식 정보 창]
-        D --> E[종목별 게시판]
-        E --> F[포스트 글]
-        
-        subgraph "주식 정보 창 내용"
-            D1[기업 소개]
-            D2[주가 차트]
-            D3[기업 관련 뉴스]
-            D4[재무 정보]
-        end
-        
-        D --> D1
-        D --> D2
-        D --> D3
-        D --> D4
+graph TD
+    A[로그인 화면] --> B{로그인 성공?}
+    B -->|성공| C[기본 페이지]
+    B -->|실패| A
+
+    C --> D[주식 검색 창]
+    C --> G[포트폴리오 창]
+
+    %% 주식 정보 창 흐름
+    D --> H[주식 정보 창]
+    H --> I[종목별 게시판]
+    I --> J[포스트 글]
+    
+    subgraph "주식 정보 창 내용"
+        H1[기업 소개]
+        H2[주가 차트]
+        H3[기업 관련 뉴스]
+        H4[재무 정보]
+    end
+    
+    H --> H1
+    H --> H2
+    H --> H3
+    H --> H4
+
+    %% 포트폴리오 창 흐름
+    G --> K[포트폴리오 결과]
 ```
 
 ### 5.2 와이어프레임
@@ -289,38 +326,61 @@ erDiagram
         datetime date_joined "가입일"
     }
 
-    POST {
+    Post {
         bigint post_id PK "Primary Key"
-        int user_id FK "작성자 (auth_user.id)"
-        string title "게시글 제목"
-        text content "게시글 내용"
+        string title "게시물 제목"
+        text content "게시물 내용"
+        datetime created_at "작성 시간"
+        datetime updated_at "수정 시간"
         int views "조회수"
-        datetime created_at "작성일"
-        datetime updated_at "수정일"
-        string stock_ticker FK "연결된 종목 (stocks.ticker)"
+        string image "이미지 경로"
+        string stock_ticker FK "Foreign Key to Stock(ticker)"
+        int author_id FK "Foreign Key to AUTH_USER(id)"
     }
 
-    COMMENT {
-        bigint comment_id PK "Primary Key"
-        bigint post_id FK "연결된 게시글"
-        int user_id FK "작성자 (auth_user.id)"
+    Comment {
+        bigint id PK "Primary Key"
         text content "댓글 내용"
-        datetime created_at "작성일"
-        datetime updated_at "수정일"
+        datetime created_at "작성 시간"
+        datetime updated_at "수정 시간"
+        bigint post_id FK "Foreign Key to Post(post_id)"
+        int author_id FK "Foreign Key to AUTH_USER(id)"
+        bigint parent_id FK "Self-referencing Foreign Key to Comment(id)"
     }
 
-    STOCK {
+    Portfolio {
+        bigint id PK "Primary Key"
+        string name "포트폴리오 이름"
+        datetime created_at "생성일"
+        int user_id FK "Foreign Key to AUTH_USER(id)"
+    }
+
+    PortfolioStock {
+        bigint id PK "Primary Key"
+        int portfolio_id FK "Foreign Key to Portfolio(id)"
+        string stock_ticker FK "Foreign Key to Stock(ticker)"
+        int quantity "보유 주식 수량"
+        decimal purchase_price "매수 가격"
+        datetime created_at "추가된 날짜"
+    }
+
+    Stock {
         string ticker PK "Primary Key"
-        string company_name "기업 이름"
+        string company_name "회사 이름"
         string exchange "거래소"
-        datetime created_at "등록일"
+        datetime created_at "생성일"
         datetime updated_at "수정일"
     }
 
-    AUTH_USER ||--o{ POST : "작성"
-    AUTH_USER ||--o{ COMMENT : "작성"
-    POST ||--o{ COMMENT : "게시글에 달린 댓글"
-    STOCK ||--o{ POST : "종목 관련 게시글"
+    %% Relationships
+    AUTH_USER ||--o{ Post : "작성자"
+    AUTH_USER ||--o{ Comment : "작성자"
+    AUTH_USER ||--o{ Portfolio : "포트폴리오 소유자"
+    Post ||--o{ Comment : "포스트에 작성된 댓글"
+    Post ||--o| Stock : "관련 주식"
+    Comment ||--o| Comment : "부모 댓글"
+    Portfolio ||--o{ PortfolioStock : "포트폴리오에 포함된 주식"
+    Stock ||--o{ PortfolioStock : "포트폴리오에 포함된 주식"
 ```
 
 
@@ -329,9 +389,7 @@ erDiagram
 ## 8. 추가적으로 해야할 사항
 
 
-- 주식 포트폴리오 모델 추가, models.py 마이그레이션 오류
-ImportError: cannot import name 'Stock' from 'portfolio.models' (C:\Users\kims0\OneDrive\바탕 화면\middle_project\stock_community\portfolio\models.py)
+- 포트폴리오 주식 추가 안되는 오류
 - UI 개선
-- 와이어 프레임 그리기 / 오늘까지 완료하기
-- 리드미 다시 재작성
+- 와이어 프레임 그리기 / 30일까지 완료
 - 배포
