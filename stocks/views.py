@@ -4,6 +4,7 @@ from .models import Stock
 import yfinance as yf
 from googletrans import Translator
 
+
 class StocksSearchView(ListView):
     model = Stock
     template_name = 'stocks/stocks_search.html'
@@ -56,7 +57,7 @@ class StockDetailView(DetailView):
         # 재무제표 번역
         financials = stock.financials
         if not financials.empty:
-            # 계정과목을 한국어로 번역합니다.
+            # 계정과목 한국어 번역
             translated_financials = financials.rename(
                 lambda x: translator.translate(x, dest=target_language).text, axis='index'
             )

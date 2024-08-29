@@ -27,6 +27,7 @@ class ForumMainView(ListView):
         context['query'] = self.request.GET.get('q', '')
         return context
 
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
@@ -44,6 +45,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def get_success_url(self):
         return reverse_lazy('forum:forum_list', kwargs={'ticker': self.kwargs['ticker']})
+
 
 class PostReadView(DetailView):
     model = Post
@@ -75,6 +77,7 @@ class PostReadView(DetailView):
         context = self.get_context_data()
         context['form'] = form
         return self.render_to_response(context)
+
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post

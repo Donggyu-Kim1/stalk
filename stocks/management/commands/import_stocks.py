@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from stocks.models import Stock
 import csv
 
+
 class Command(BaseCommand):
     help = 'Import stocks from CSV file'
 

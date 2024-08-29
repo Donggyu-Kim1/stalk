@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 
+
 class Post(models.Model):
     post_id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=255)  # 게시물 제목
@@ -15,6 +16,7 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')  # 연결된 게시물
