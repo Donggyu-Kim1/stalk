@@ -201,7 +201,8 @@ stock_community/
 │   ├── migrations/
 │   |   ├── __init__.py
 │   |   ├── 0001_initial.py
-│   |   └── 0002_post_image.py
+│   |   ├── 0002_post_image.py
+|   |   └── 0003_comment_parent.py
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
