@@ -61,8 +61,8 @@ class PostReadView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['comments'] = Comment.objects.filter(post=self.object).order_by('created_at')
-        context['form'] = CommentForm()  # 댓글 작성 폼 추가
+        context['comments'] = Comment.objects.filter(post=self.object, parent=None).order_by('created_at')
+        context['form'] = CommentForm()
         return context
 
     def post(self, request, *args, **kwargs):
@@ -72,6 +72,9 @@ class PostReadView(DetailView):
             comment = form.save(commit=False)
             comment.author = request.user
             comment.post = self.object
+            parent_id = request.POST.get('parent_id')
+            if parent_id:
+                comment.parent = Comment.objects.get(id=parent_id)
             comment.save()
             return redirect('forum:post_read', ticker=self.kwargs['ticker'], post_id=self.object.pk)
         context = self.get_context_data()
