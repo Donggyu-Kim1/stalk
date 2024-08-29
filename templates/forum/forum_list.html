@@ -5,6 +5,11 @@
 
 <a href="{% url 'forum:post_create' ticker=stock.ticker %}" class="btn btn-primary">새 글 작성</a>
 
+<form method="get" action="{% url 'forum:forum_list' ticker=stock.ticker %}">
+    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="게시글 검색...">
+    <button type="submit">검색</button>
+</form>
+
 {% if posts %}
     <ul class="list-group mt-3">
         {% for post in posts %}

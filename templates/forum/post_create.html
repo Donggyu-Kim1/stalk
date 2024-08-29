@@ -3,11 +3,13 @@
 {% block content %}
 <h1>새 글 작성</h1>
 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">작성</button>
+    <input type="file" name="image" accept="image/*">
+    <button type="submit">게시글 작성</button>
 </form>
+
 
 <a href="{% url 'forum:forum_list' ticker=view.kwargs.ticker %}" class="btn btn-secondary mt-3">목록으로 돌아가기</a>
 {% endblock %}
