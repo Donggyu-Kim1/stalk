@@ -53,6 +53,16 @@
 | **forum** | /forum/str:ticker/int:post_id/comments/int:comment_id/update | post_comment_update | forum/post_comment_update.html | 댓글 수정 |
 | **forum** | /forum/str:ticker/int:post_id/comments/int:comment_id/delete | post_comment_delete | forum/post_comment_delete.html | 댓글 삭제 |
 
+#### Portfolio URL
+| **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
+| -- | -- | -- | -- | -- |
+| **portfolio** | /portfolio/list/ | portfolio_list | portfolio/portfolio_list.html | 포트폴리오 리스트 |
+| **portfolio** | /portfolio/create/ | portfolio_create | portfolio/portfolio_create.html | 포트폴리오 만들기 |
+| **portfolio** | /portfolio/read/ | portfolio_read | portfolio/portfolio_read.html | 포트폴리오 결과 |
+| **portfolio** | /portfolio/update/ | portfolio_update | portfolio/portfolio_update.html | 포트폴리오 수정 |
+| **portfolio** | /portfolio/delete/ | portfolio_delete | portfolio/portfolio_delete.html | 포트폴리오 삭제 |
+
+
 ## 3. 기능 명세서
 1. 사용자 등록 기능
     - 회원가입 : 아이디, 비밀번호
@@ -74,6 +84,12 @@
     - 댓글
         - CRUD
         - 댓글
+
+4. 포트폴리오
+    - 나의 주식 포트폴리오
+        - CRUD
+        - 포트폴리오 원 그래프, 수익률 그래프
+        - 산업 섹터 비율
     
 
 | 대분류 | 중분류 | 소분류 | 설명 | 완성 여부 |
@@ -98,7 +114,9 @@
 | | | 조회수 | 게시글 조회수 기능 | ㅇ |
 | | | 유효성 검사 | 광고, 악성 글 차단 | x |
 | | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 | ㅇ |
-| 4. 마무리 | 구현 영상 | - | - | x |
+| 4. 포트폴리오 | 포트폴리오 |  | 포트폴리오 CRUD |  |
+| | 포트폴리오 |  | 포트폴리오 그래프 기능 |  |
+| 5. 마무리 | 구현 영상 | - | - | x |
 | | README 파일 작성 | - | - | x |
 | | 배포 | - | - | x |
     
