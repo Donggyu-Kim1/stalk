@@ -6,7 +6,6 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="file" name="image" accept="image/*">
     <button type="submit">게시글 작성</button>
 </form>
 
