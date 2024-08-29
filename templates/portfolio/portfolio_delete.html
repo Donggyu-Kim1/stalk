@@ -4,11 +4,12 @@
 
 {% block content %}
 <h2>포트폴리오 삭제</h2>
-<p>정말로 "{{ object.name }}" 포트폴리오를 삭제하시겠습니까?</p>
+
+<p>정말로 {{ object.name }} 포트폴리오를 삭제하시겠습니까?</p>
 
 <form method="post">
     {% csrf_token %}
-    <button type="submit">예, 삭제합니다</button>
-    <a href="{% url 'portfolio_list' %}" class="btn">아니오, 돌아가기</a>
+    <button type="submit" class="btn btn-danger">삭제</button>
+    <a href="{% url 'portfolio:portfolio_read' object.pk %}" class="btn btn-secondary">취소</a>
 </form>
 {% endblock %}

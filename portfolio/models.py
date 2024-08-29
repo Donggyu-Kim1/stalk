@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from stocks.models import Stock  # Stock 모델을 stocks 앱에서 가져오기
 
 class Portfolio(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='portfolios')
@@ -11,7 +12,7 @@ class Portfolio(models.Model):
 
 class PortfolioStock(models.Model):
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE, related_name='stocks')
-    stock = models.ForeignKey('Stock', on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)  # stocks 앱의 Stock 모델 참조
     quantity = models.PositiveIntegerField()  # 보유 주식 수량
     purchase_price = models.DecimalField(max_digits=10, decimal_places=2)  # 매수 가격
     created_at = models.DateTimeField(auto_now_add=True)  # 추가된 날짜
@@ -21,3 +22,4 @@ class PortfolioStock(models.Model):
 
     class Meta:
         unique_together = ['portfolio', 'stock']  # 포트폴리오에 동일 주식을 중복 추가 X
+

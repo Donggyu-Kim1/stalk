@@ -3,24 +3,14 @@
 {% block title %}포트폴리오 수정{% endblock %}
 
 {% block content %}
-<h2>포트폴리오 수정</h2>
+<h2>{{ object.portfolio.name }} 포트폴리오 수정</h2>
 
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
 
-    {% for i in range(1, 11) %}
-        <h4>주식 {{ i }}</h4>
-        <label for="id_stock_{{ i }}">종목 티커:</label>
-        <input type="text" name="stock_{{ i }}" id="id_stock_{{ i }}" value="{{ stocks|get_value:i:'ticker' }}">
-        <label for="id_quantity_{{ i }}">수량:</label>
-        <input type="number" name="quantity_{{ i }}" id="id_quantity_{{ i }}" value="{{ stocks|get_value:i:'quantity' }}">
-        <label for="id_purchase_price_{{ i }}">매수 가격:</label>
-        <input type="number" step="0.01" name="purchase_price_{{ i }}" id="id_purchase_price_{{ i }}" value="{{ stocks|get_value:i:'purchase_price' }}">
-    {% endfor %}
-
-    <button type="submit">저장</button>
+    <button type="submit" class="btn btn-primary">수정 내용 저장</button>
 </form>
 
-<a href="{% url 'portfolio_list' %}">목록으로 돌아가기</a>
+<a href="{% url 'portfolio:portfolio_read' object.portfolio.pk %}" class="btn btn-secondary">포트폴리오로 돌아가기</a>
 {% endblock %}

@@ -1,20 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ portfolio.name }} 포트폴리오{% endblock %}
+{% block title %}포트폴리오 상세 정보{% endblock %}
 
 {% block content %}
 <h2>{{ portfolio.name }} 포트폴리오</h2>
 
-<p><strong>수익률:</strong> {{ profit_rate }}%</p>
+<p><strong>생성일:</strong> {{ portfolio.created_at|date:"Y-m-d" }}</p>
 
-<h3>산업 섹터 비율</h3>
-<ul>
-    {% for sector, value in sector_distribution.items %}
-        <li>{{ sector }}: {{ value }}</li>
-    {% endfor %}
-</ul>
+<h3>포트폴리오에 포함된 주식</h3>
 
-<a href="{% url 'portfolio_update' portfolio.pk %}" class="btn">포트폴리오 수정</a>
-<a href="{% url 'portfolio_delete' portfolio.pk %}" class="btn">포트폴리오 삭제</a>
-<a href="{% url 'portfolio_list' %}" class="btn">목록으로 돌아가기</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>종목 티커</th>
+            <th>회사 이름</th>
+            <th>수량</th>
+            <th>매수 가격</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stock in portfolio.stocks.all %}
+        <tr>
+            <td>{{ stock.stock.ticker }}</td>
+            <td>{{ stock.stock.company_name }}</td>
+            <td>{{ stock.quantity }}</td>
+            <td>{{ stock.purchase_price }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">포트폴리오에 추가된 주식이 없습니다.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'portfolio:portfolio_update' portfolio.pk %}" class="btn btn-secondary">포트폴리오 수정</a>
+<a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger">포트폴리오 삭제</a>
+<a href="{% url 'portfolio:portfolio_list' %}" class="btn btn-secondary">목록으로 돌아가기</a>
 {% endblock %}

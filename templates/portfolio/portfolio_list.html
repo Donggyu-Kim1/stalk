@@ -1,28 +1,37 @@
 {% extends 'base.html' %}
 
-{% block title %}나의 포트폴리오{% endblock %}
+{% block title %}포트폴리오 목록{% endblock %}
 
 {% block content %}
-<h2>나의 포트폴리오</h2>
+<h2>포트폴리오 목록</h2>
 
-{% if portfolios %}
-    <ul>
+<a href="{% url 'portfolio:portfolio_create' %}" class="btn btn-primary">새 포트폴리오 만들기</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>포트폴리오 이름</th>
+            <th>생성일</th>
+            <th>액션</th>
+        </tr>
+    </thead>
+    <tbody>
         {% for portfolio in portfolios %}
-            <li>
-                <a href="{% url 'portfolio_read' portfolio.pk %}">{{ portfolio.name }}</a>
-                <!-- 수정 버튼 -->
-                <a href="{% url 'portfolio_update' portfolio.pk %}" class="btn">수정</a>
-                <!-- 삭제 버튼 -->
-                <form action="{% url 'portfolio_delete' portfolio.pk %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn">삭제</button>
-                </form>
-            </li>
+        <tr>
+            <td><a href="{% url 'portfolio:portfolio_read' portfolio.pk %}">{{ portfolio.name }}</a></td>
+            <td>{{ portfolio.created_at|date:"Y-m-d" }}</td>
+            <td>
+                <a href="{% url 'portfolio:portfolio_update' portfolio.pk %}" class="btn btn-secondary">수정</a>
+                <a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger">삭제</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="3">포트폴리오가 없습니다.</td>
+        </tr>
         {% endfor %}
-    </ul>
-{% else %}
-    <p>아직 포트폴리오가 없습니다.</p>
-{% endif %}
+    </tbody>
+</table>
 
-<a href="{% url 'portfolio_create' %}" class="btn">새 포트폴리오 만들기</a>
+<a href="{% url 'home' %}" class="btn btn-secondary">홈으로</a>
 {% endblock %}

@@ -9,18 +9,73 @@
     {% csrf_token %}
     {{ form.as_p }}
 
-    {% for i in range(1, 11) %}
-        <h4>주식 {{ i }}</h4>
-        <label for="id_stock_{{ i }}">종목 티커:</label>
-        <input type="text" name="stock_{{ i }}" id="id_stock_{{ i }}">
-        <label for="id_quantity_{{ i }}">수량:</label>
-        <input type="number" name="quantity_{{ i }}" id="id_quantity_{{ i }}">
-        <label for="id_purchase_price_{{ i }}">매수 가격:</label>
-        <input type="number" step="0.01" name="purchase_price_{{ i }}" id="id_purchase_price_{{ i }}">
-    {% endfor %}
+    <div id="stock-entries">
+        <div class="stock-entry">
+            <h4>주식 1</h4>
+            <label for="id_stock_1">종목 티커:</label>
+            <input type="text" name="stock_1" id="id_stock_1" class="stock-search">
+            <label for="id_quantity_1">수량:</label>
+            <input type="number" name="quantity_1" id="id_quantity_1">
+            <label for="id_purchase_price_1">매수 가격:</label>
+            <input type="number" step="0.01" name="purchase_price_1" id="id_purchase_price_1">
+        </div>
+    </div>
 
-    <button type="submit">저장</button>
+    <button type="button" id="add-stock" class="btn btn-secondary">주식 추가</button>
+    <button type="submit" class="btn btn-primary">포트폴리오 저장</button>
 </form>
 
-<a href="{% url 'portfolio_list' %}">목록으로 돌아가기</a>
+<a href="{% url 'portfolio:portfolio_list' %}" class="btn btn-secondary">목록으로 돌아가기</a>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script>
+$(document).ready(function() {
+    var stockCount = 1;
+
+    function initAutocomplete(element) {
+        $(element).autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    url: "{% url 'portfolio:portfolio_search' %}",
+                    dataType: "json",
+                    data: {
+                        query: request.term
+                    },
+                    success: function(data) {
+                        response($.map(data.results, function(item) {
+                            return {
+                                label: item.ticker + ' - ' + item.company_name,
+                                value: item.ticker
+                            };
+                        }));
+                    }
+                });
+            },
+            minLength: 2,
+        });
+    }
+
+    initAutocomplete('.stock-search');
+
+    $('#add-stock').click(function() {
+        stockCount++;
+        var newEntry = `
+            <div class="stock-entry">
+                <h4>주식 ${stockCount}</h4>
+                <label for="id_stock_${stockCount}">종목 티커:</label>
+                <input type="text" name="stock_${stockCount}" id="id_stock_${stockCount}" class="stock-search">
+                <label for="id_quantity_${stockCount}">수량:</label>
+                <input type="number" name="quantity_${stockCount}" id="id_quantity_${stockCount}">
+                <label for="id_purchase_price_${stockCount}">매수 가격:</label>
+                <input type="number" step="0.01" name="purchase_price_${stockCount}" id="id_purchase_price_${stockCount}">
+            </div>
+        `;
+        $('#stock-entries').append(newEntry);
+        initAutocomplete(`#id_stock_${stockCount}`);
+    });
+});
+</script>
 {% endblock %}
