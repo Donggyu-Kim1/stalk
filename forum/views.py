@@ -2,6 +2,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
+from django.db.models import Q
 from .models import Post, Comment
 from stocks.models import Stock
 from .forms import PostForm, CommentForm
@@ -11,15 +12,19 @@ class ForumMainView(ListView):
     model = Post
     template_name = 'forum/forum_list.html'
     context_object_name = 'posts'
-    paginate_by = 10  # 페이지당 10개의 게시글
+    paginate_by = 10
 
     def get_queryset(self):
-        self.stock = get_object_or_404(Stock, ticker=self.kwargs['ticker'])
-        return Post.objects.filter(stock_ticker=self.stock).order_by('-created_at')
+        queryset = Post.objects.filter(stock_ticker__ticker=self.kwargs['ticker']).order_by('-created_at')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(Q(title__icontains=query) | Q(content__icontains=query))
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['stock'] = self.stock
+        context['stock'] = get_object_or_404(Stock, ticker=self.kwargs['ticker'])
+        context['query'] = self.request.GET.get('q', '')
         return context
 
 class PostCreateView(LoginRequiredMixin, CreateView):
