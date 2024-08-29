@@ -11,6 +11,12 @@
     {{ post.content|linebreaks }}
 </div>
 
+{% if post.image %}
+    <div class="mt-3">
+        <img src="{{ post.image.url }}" alt="Post image" class="img-fluid">
+    </div>
+{% endif %}
+
 <div class="mt-3">
     <a href="{% url 'forum:post_update' ticker=post.stock_ticker.ticker post_id=post.post_id %}" class="btn btn-primary">수정</a>
     <a href="{% url 'forum:post_delete' ticker=post.stock_ticker.ticker post_id=post.post_id %}" class="btn btn-danger">삭제</a>
