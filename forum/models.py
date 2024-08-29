@@ -19,11 +19,12 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')  # 연결된 게시물
-    author = models.ForeignKey(User, on_delete=models.CASCADE, db_column='user_id')  # 작성자
-    content = models.TextField()  # 댓글 내용
-    created_at = models.DateTimeField(default=timezone.now)  # 작성 시간
-    updated_at = models.DateTimeField(auto_now=True)  # 수정 시간
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, db_column='user_id')
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
 
     def __str__(self):
         return f'Comment by {self.author} on {self.post}'
