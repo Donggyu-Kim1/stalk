@@ -32,6 +32,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     form_class = PostForm
     template_name = 'forum/post_create.html'
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.stock_ticker = get_object_or_404(Stock, ticker=self.kwargs['ticker'])

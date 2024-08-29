@@ -4,7 +4,7 @@ from .models import Post, Comment
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content']  # 폼에서 표시할 필드
+        fields = ['title', 'content', 'image']  # 폼에서 표시할 필드
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
