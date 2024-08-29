@@ -329,7 +329,8 @@ erDiagram
 ## 8. 추가적으로 해야할 사항
 
 
-- 추가할 모델 고민해보기(주식 포트폴리오)
+- 주식 포트폴리오 모델 추가, models.py 마이그레이션 오류
+ImportError: cannot import name 'Stock' from 'portfolio.models' (C:\Users\kims0\OneDrive\바탕 화면\middle_project\stock_community\portfolio\models.py)
 - UI 개선
 - 와이어 프레임 그리기 / 오늘까지 완료하기
 - 리드미 다시 재작성
