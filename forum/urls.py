@@ -1,9 +1,7 @@
 from django.urls import path
 from . import views
 
-
 app_name = 'forum'
-
 
 urlpatterns = [
     path('<str:ticker>/', views.ForumMainView.as_view(), name='forum_list'), # 특정 기업 토론방 메인

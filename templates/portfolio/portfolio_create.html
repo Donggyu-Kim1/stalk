@@ -27,25 +27,36 @@
     document.addEventListener("DOMContentLoaded", function() {
         const formsetArea = document.getElementById('formset-area');
         const addFormButton = document.getElementById('add-form');
-        let totalForms = document.getElementById('id_form-TOTAL_FORMS');
+        let totalForms = document.getElementById('id_stock-TOTAL_FORMS');
         let formIndex = formsetArea.querySelectorAll('.form-row').length;
 
         addFormButton.addEventListener('click', function() {
             const newForm = formsetArea.querySelector('.form-row').cloneNode(true);
-            const regex = new RegExp(`form-(\\d+)`, 'g');
-            const newFormHtml = newForm.innerHTML.replace(regex, `form-${formIndex}`);
+            const regex = new RegExp(`stock-(\\d+)`, 'g');
+            const newFormHtml = newForm.innerHTML.replace(regex, `stock-${formIndex}`);
             newForm.innerHTML = newFormHtml;
-
+        
             const inputs = newForm.querySelectorAll('input');
             inputs.forEach(input => {
                 input.value = '';
                 const nameAttr = input.getAttribute('name');
                 if (nameAttr) {
-                    input.setAttribute('name', nameAttr.replace(regex, `form-${formIndex}`));
-                    input.id = input.id.replace(regex, `form-${formIndex}`);
+                    const newName = nameAttr.replace(regex, `stock-${formIndex}`);
+                    input.setAttribute('name', newName);
+                    input.id = newName;
                 }
             });
-
+        
+            const labels = newForm.querySelectorAll('label');
+            labels.forEach(label => {
+                const forAttr = label.getAttribute('for');
+                if (forAttr) {
+                    const newFor = forAttr.replace(regex, `stock-${formIndex}`);
+                    const newId = newFor.replace('id_', ''); // id_ 제거
+                    label.setAttribute('for', newId);
+                }
+            });
+        
             formsetArea.appendChild(newForm);
             totalForms.value = formIndex + 1;
             formIndex++;

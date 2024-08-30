@@ -7,24 +7,36 @@ class PortfolioForm(forms.ModelForm):
     class Meta:
         model = Portfolio
         fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'autocomplete': 'name',
+            }),
+        }
 
 class PortfolioStockForm(forms.ModelForm):
-    ticker = forms.CharField(max_length=10, label="Ticker")
+    ticker = forms.CharField(
+        max_length=10, 
+        label="Ticker",
+        widget=forms.TextInput(attrs={
+            'autocomplete': 'ticker'
+        })
+    )
 
     class Meta:
         model = PortfolioStock
         fields = ['ticker', 'quantity', 'purchase_price']
-
-    def clean_ticker(self):
-        ticker = self.cleaned_data['ticker']
-        if not Stock.objects.filter(ticker=ticker).exists():
-            raise forms.ValidationError(f"Stock with ticker '{ticker}' does not exist.")
-        return ticker
+        widgets = {
+            'quantity': forms.NumberInput(attrs={
+                'autocomplete': 'quantity'
+            }),
+            'purchase_price': forms.NumberInput(attrs={
+                'autocomplete': 'purchase_price'
+            }),
+        }
 
 PortfolioStockFormSet = inlineformset_factory(
     Portfolio, PortfolioStock,
     form=PortfolioStockForm,
-    extra=1,
+    extra=5,
     can_delete=True
 )
-

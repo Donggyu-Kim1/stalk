@@ -1,9 +1,7 @@
 from django.urls import path
 from . import views
 
-
 app_name = 'portfolio'
-
 
 urlpatterns = [
     path('list/', views.PortfolioListView.as_view(), name='portfolio_list'),    # 만든 포트폴리오 리스트

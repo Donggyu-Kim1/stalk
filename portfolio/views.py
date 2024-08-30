@@ -1,8 +1,7 @@
 from django.urls import reverse_lazy
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q
 from .models import Portfolio, PortfolioStock
 from .forms import PortfolioForm, PortfolioStockForm, PortfolioStockFormSet
 from stocks.models import Stock
@@ -17,7 +16,7 @@ class PortfolioListView(LoginRequiredMixin, ListView):
         return Portfolio.objects.filter(user=self.request.user)
 
 
-class PortfolioCreateView(CreateView):
+class PortfolioCreateView(LoginRequiredMixin, CreateView):
     model = Portfolio
     form_class = PortfolioForm
     template_name = 'portfolio/portfolio_create.html'
@@ -25,22 +24,32 @@ class PortfolioCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.POST:
-            context['formset'] = PortfolioStockFormSet(self.request.POST)
+            context['formset'] = PortfolioStockFormSet(self.request.POST, prefix='stock')
         else:
-            context['formset'] = PortfolioStockFormSet()
+            context['formset'] = PortfolioStockFormSet(prefix='stock')
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
         formset = context['formset']
 
+        # Portfolio 객체를 먼저 저장
         self.object = form.save(commit=False)
         self.object.user = self.request.user
-        self.object.save()  # 먼저 포트폴리오를 저장합니다.
+        self.object.save()
 
         if formset.is_valid():
-            formset.instance = self.object  # formset이 현재 저장된 Portfolio와 연결되도록 설정
-            formset.save()  # formset을 저장하여 PortfolioStock 인스턴스를 생성합니다.
+            # 모든 formset 인스턴스에서 PortfolioStock 객체를 생성하고 저장
+            for stock_form in formset:
+                portfolio_stock = stock_form.save(commit=False)
+                portfolio_stock.portfolio = self.object  # 현재 포트폴리오와 연결
+                # Stock 객체를 티커로 찾은 후 PortfolioStock 객체에 할당
+                ticker = stock_form.cleaned_data.get('ticker')
+                if ticker:
+                    stock = Stock.objects.get(ticker=ticker)
+                    portfolio_stock.stock = stock
+                    portfolio_stock.save()  # PortfolioStock 객체 저장
+
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
@@ -53,6 +62,11 @@ class PortfolioReadView(LoginRequiredMixin, DetailView):
     model = Portfolio
     template_name = 'portfolio/portfolio_read.html'
     context_object_name = 'portfolio'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['portfolio_stocks'] = PortfolioStock.objects.filter(portfolio=self.object).select_related('stock')
+        return context
 
 
 class PortfolioUpdateView(LoginRequiredMixin, UpdateView):
