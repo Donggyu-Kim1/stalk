@@ -21,7 +21,6 @@
             <td><a href="{% url 'portfolio:portfolio_read' portfolio.pk %}">{{ portfolio.name }}</a></td>
             <td>{{ portfolio.created_at|date:"Y-m-d" }}</td>
             <td>
-                <a href="{% url 'portfolio:portfolio_update' portfolio.pk %}" class="btn btn-secondary">수정</a>
                 <a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger">삭제</a>
             </td>
         </tr>

@@ -1,6 +1,6 @@
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from django.views.generic import ListView, CreateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Portfolio, PortfolioStock
 from .forms import PortfolioForm, PortfolioStockFormSet
@@ -67,34 +67,6 @@ class PortfolioReadView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context['portfolio_stocks'] = PortfolioStock.objects.filter(portfolio=self.object).select_related('stock')
         return context
-
-
-class PortfolioUpdateView(LoginRequiredMixin, UpdateView):
-    model = Portfolio
-    form_class = PortfolioForm
-    template_name = 'portfolio/portfolio_update.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            context['formset'] = PortfolioStockFormSet(self.request.POST, instance=self.object)
-        else:
-            context['formset'] = PortfolioStockFormSet(instance=self.object)
-        return context
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        if formset.is_valid():
-            self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            return super().form_valid(form)
-        else:
-            return self.render_to_response(self.get_context_data(form=form))
-
-    def get_success_url(self):
-        return reverse_lazy('portfolio:portfolio_read', kwargs={'pk': self.object.pk})
 
 
 class PortfolioDeleteView(LoginRequiredMixin, DeleteView):
