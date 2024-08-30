@@ -9,6 +9,6 @@
 <p>이름: {{ user.first_name }} {{ user.last_name }}</p>
 <a href="{% url 'edit_profile' %}">프로필 수정</a>
 
-<p><a href="{% url 'stocks:search' %}">주식 검색으로 돌아가기</a></p>
+<a href="{% url 'home' %}" class="btn btn-secondary">홈으로</a>
 
 {% endblock %}

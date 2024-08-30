@@ -9,26 +9,20 @@
 
 <h3>포트폴리오에 포함된 주식</h3>
 
-<table class="table">
+<<table>
     <thead>
         <tr>
-            <th>종목 티커</th>
-            <th>회사 이름</th>
+            <th>주식</th>
             <th>수량</th>
-            <th>매수 가격</th>
+            <th>구매 가격</th>
         </tr>
     </thead>
     <tbody>
-        {% for stock in portfolio.stocks.all %}
+        {% for stock in portfolio_stocks %}
         <tr>
-            <td>{{ stock.stock.ticker }}</td>
-            <td>{{ stock.stock.company_name }}</td>
+            <td>{{ stock.stock.ticker }} - {{ stock.stock.name }}</td>
             <td>{{ stock.quantity }}</td>
             <td>{{ stock.purchase_price }}</td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">포트폴리오에 추가된 주식이 없습니다.</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -1,11 +1,11 @@
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, render
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, View
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from .models import Portfolio, PortfolioStock
-from .forms import PortfolioForm, PortfolioStockForm
+from .forms import PortfolioForm, PortfolioStockForm, PortfolioStockFormSet
 from stocks.models import Stock
-from django.http import JsonResponse
 
 
 class PortfolioListView(LoginRequiredMixin, ListView):
@@ -17,59 +17,36 @@ class PortfolioListView(LoginRequiredMixin, ListView):
         return Portfolio.objects.filter(user=self.request.user)
 
 
-class PortfolioSearchView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        query = request.GET.get('query', '')
-        if query:
-            stocks = Stock.objects.filter(ticker__icontains=query) | Stock.objects.filter(company_name__icontains=query)
-            results = [{'ticker': stock.ticker, 'company_name': stock.company_name} for stock in stocks]
-            return JsonResponse({'results': results})
-        return JsonResponse({'results': []})
-
-
-class PortfolioCreateView(LoginRequiredMixin, CreateView):
+class PortfolioCreateView(CreateView):
     model = Portfolio
     form_class = PortfolioForm
     template_name = 'portfolio/portfolio_create.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = PortfolioStockFormSet(self.request.POST)
+        else:
+            context['formset'] = PortfolioStockFormSet()
+        return context
+
     def form_valid(self, form):
-        form.instance.user = self.request.user
-        portfolio = form.save()
+        context = self.get_context_data()
+        formset = context['formset']
 
-        # 세션에 저장된 주식을 포트폴리오에 추가
-        for stock_data in self.request.session.get('selected_stocks', []):
-            stock_instance = Stock.objects.get(ticker=stock_data['ticker'])
-            quantity = int(stock_data['quantity'])
-            purchase_price = float(stock_data['purchase_price'])
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()  # 먼저 포트폴리오를 저장합니다.
 
-            PortfolioStock.objects.create(
-                portfolio=portfolio,
-                stock=stock_instance,
-                quantity=quantity,
-                purchase_price=purchase_price
-            )
+        if formset.is_valid():
+            formset.instance = self.object  # formset이 현재 저장된 Portfolio와 연결되도록 설정
+            formset.save()  # formset을 저장하여 PortfolioStock 인스턴스를 생성합니다.
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
 
-        # 세션에서 주식 데이터 제거
-        self.request.session.pop('selected_stocks', None)
-
-        return redirect(reverse_lazy('portfolio:portfolio_read', kwargs={'pk': portfolio.pk}))
-
-
-class AddStockToPortfolioView(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        ticker = request.POST.get('ticker')
-        quantity = request.POST.get('quantity')
-        purchase_price = request.POST.get('purchase_price')
-
-        selected_stocks = request.session.get('selected_stocks', [])
-        selected_stocks.append({
-            'ticker': ticker,
-            'quantity': quantity,
-            'purchase_price': purchase_price,
-        })
-        request.session['selected_stocks'] = selected_stocks
-
-        return JsonResponse({'message': '주식이 포트폴리오에 추가되었습니다.'})
+    def get_success_url(self):
+        return reverse_lazy('portfolio:portfolio_read', kwargs={'pk': self.object.pk})
 
 
 class PortfolioReadView(LoginRequiredMixin, DetailView):

@@ -3,8 +3,6 @@
 {% block content %}
 <h1>주식 검색</h1>
 
-<a href="{% url 'profile' %}" class="btn btn-secondary">프로필 설정</a>
-
 <form method="get" action="{% url 'stocks:search' %}">
     <input type="text" name="q" value="{{ query }}" placeholder="Search stocks...">
     <button type="submit">검색</button>
@@ -44,6 +42,7 @@
 {% else %}
     <p>No stocks found.</p>
 {% endif %}
+<a href="{% url 'home' %}" class="btn btn-secondary">홈으로</a>
 <form method="POST" action="{% url 'logout' %}">
     {% csrf_token %}
     <button type="submit">Logout</button>
