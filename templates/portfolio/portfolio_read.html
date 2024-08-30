@@ -3,26 +3,27 @@
 {% block title %}포트폴리오 상세 정보{% endblock %}
 
 {% block content %}
-<h2>{{ portfolio.name }} 포트폴리오</h2>
+<h2>포트폴리오명: {{ portfolio.name }}</h2>
 
-<p><strong>생성일:</strong> {{ portfolio.created_at|date:"Y-m-d" }}</p>
-
-<h3>포트폴리오에 포함된 주식</h3>
-
+<h2>주식 목록</h2>
 <table>
     <thead>
         <tr>
-            <th>주식</th>
+            <th>티커</th>
+            <th>매입가</th>
             <th>수량</th>
-            <th>구매 가격</th>
+            <th>현재가</th>
+            <th>수익률</th>
         </tr>
     </thead>
     <tbody>
-        {% for stock in portfolio_stocks %}
+        {% for stock in stocks %}
         <tr>
-            <td>{{ stock.stock.ticker }}</td>
-            <td>{{ stock.quantity }}</td>
+            <td>{{ stock.ticker }}</td>
             <td>{{ stock.purchase_price }}</td>
+            <td>{{ stock.quantity }}</td>
+            <td>{{ stock.current_price }}</td>
+            <td>{{ stock.return_rate }}%</td>
         </tr>
         {% endfor %}
     </tbody>

@@ -1,11 +1,11 @@
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
 from django.views.generic import ListView, CreateView, DeleteView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Portfolio, PortfolioStock
 from .forms import PortfolioForm, PortfolioStockFormSet
 from stocks.models import Stock
-
+import yfinance as yf
+from decimal import Decimal
 
 class PortfolioListView(LoginRequiredMixin, ListView):
     model = Portfolio
@@ -65,7 +65,29 @@ class PortfolioReadView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['portfolio_stocks'] = PortfolioStock.objects.filter(portfolio=self.object).select_related('stock')
+        portfolio_stocks = PortfolioStock.objects.filter(portfolio=self.object).select_related('stock')
+
+        # 각 주식의 마지막 종가를 가져와 수익률을 계산
+        stocks = []
+        total_value = 0
+        for portfolio_stock in portfolio_stocks:
+            ticker = portfolio_stock.stock.ticker
+            purchase_price = portfolio_stock.purchase_price
+            quantity = portfolio_stock.quantity
+            current_price = yf.Ticker(ticker).history(period='1d')['Close'].iloc[0]
+            value = current_price * quantity
+            total_value += value
+            stock = {
+                'ticker': ticker,
+                'purchase_price': purchase_price,
+                'quantity': quantity,
+                'current_price': current_price,
+                'value': value,
+                'return_rate': round((Decimal(current_price) - purchase_price) / purchase_price * 100, 2),
+            }
+            stocks.append(stock)
+
+        context['stocks'] = stocks
         return context
 
 
