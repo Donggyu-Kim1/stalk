@@ -3,14 +3,70 @@
 {% block title %}포트폴리오 수정{% endblock %}
 
 {% block content %}
-<h2>{{ object.portfolio.name }} 포트폴리오 수정</h2>
+<h1>포트폴리오 수정</h1>
 
 <form method="post">
     {% csrf_token %}
+    <h2>포트폴리오 이름</h2>
     {{ form.as_p }}
 
-    <button type="submit" class="btn btn-primary">수정 내용 저장</button>
+    <h2>주식</h2>
+    <div id="formset-area">
+        {{ formset.management_form }}
+        {% for form in formset %}
+            <div class="form-row">
+                {% for field in form.visible_fields %}
+                    <div class="fieldWrapper">
+                        {{ field.errors }}
+                        {{ field.label_tag }} {{ field }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <button type="button" id="add-form">주식 추가</button>
+    <button type="submit">포트폴리오 수정 저장</button>
 </form>
 
-<a href="{% url 'portfolio:portfolio_read' object.portfolio.pk %}" class="btn btn-secondary">포트폴리오로 돌아가기</a>
+<a href="{% url 'portfolio:portfolio_read' object.pk %}" class="btn btn-secondary">포트폴리오로 돌아가기</a>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const formsetArea = document.getElementById('formset-area');
+        const addFormButton = document.getElementById('add-form');
+        let totalForms = document.getElementById('id_portfoliostock_set-TOTAL_FORMS');
+        let formIndex = {{ formset.total_form_count }};
+
+        addFormButton.addEventListener('click', function() {
+            const newForm = formsetArea.querySelector('.form-row').cloneNode(true);
+            const regex = new RegExp('portfoliostock_set-(\\d+)', 'g');
+            const newFormHtml = newForm.innerHTML.replace(regex, `portfoliostock_set-${formIndex}`);
+            newForm.innerHTML = newFormHtml;
+        
+            const inputs = newForm.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.value = '';
+                const nameAttr = input.getAttribute('name');
+                if (nameAttr) {
+                    const newName = nameAttr.replace(regex, `portfoliostock_set-${formIndex}`);
+                    input.setAttribute('name', newName);
+                    input.id = `id_${newName}`;
+                }
+            });
+        
+            const labels = newForm.querySelectorAll('label');
+            labels.forEach(label => {
+                const forAttr = label.getAttribute('for');
+                if (forAttr) {
+                    const newFor = forAttr.replace(regex, `portfoliostock_set-${formIndex}`);
+                    label.setAttribute('for', newFor);
+                }
+            });
+        
+            formsetArea.appendChild(newForm);
+            totalForms.value = parseInt(totalForms.value) + 1;
+            formIndex++;
+        });
+    });
+</script>
 {% endblock %}
