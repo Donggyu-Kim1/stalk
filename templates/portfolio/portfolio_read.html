@@ -29,6 +29,8 @@
     </tbody>
 </table>
 
+<h2>전체 포트폴리오 수익률: {{ portfolio_return_rate }}%</h2>
+
 <a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger">포트폴리오 삭제</a>
 <a href="{% url 'portfolio:portfolio_list' %}" class="btn btn-secondary">목록으로 돌아가기</a>
 {% endblock %}

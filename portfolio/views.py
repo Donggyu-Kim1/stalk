@@ -69,6 +69,7 @@ class PortfolioReadView(LoginRequiredMixin, DetailView):
 
         # 각 주식의 마지막 종가를 가져와 수익률을 계산
         stocks = []
+        total_purchase_price = 0
         total_value = 0
         for portfolio_stock in portfolio_stocks:
             ticker = portfolio_stock.stock.ticker
@@ -76,6 +77,7 @@ class PortfolioReadView(LoginRequiredMixin, DetailView):
             quantity = portfolio_stock.quantity
             current_price = yf.Ticker(ticker).history(period='1d')['Close'].iloc[0]
             value = current_price * quantity
+            total_purchase_price += purchase_price * quantity
             total_value += value
             stock = {
                 'ticker': ticker,
@@ -87,7 +89,11 @@ class PortfolioReadView(LoginRequiredMixin, DetailView):
             }
             stocks.append(stock)
 
+        # 전체 포트폴리오 수익률을 계산
+        portfolio_return_rate = round((Decimal(total_value) - total_purchase_price) / total_purchase_price * 100, 2)
+
         context['stocks'] = stocks
+        context['portfolio_return_rate'] = portfolio_return_rate
         return context
 
 

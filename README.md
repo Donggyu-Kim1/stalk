@@ -61,11 +61,8 @@
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
 | -- | -- | -- | -- | -- |
 | **portfolio** | /portfolio/list/ | portfolio_list | portfolio/portfolio_list.html | 포트폴리오 리스트 |
-| **portfolio** | /portfolio/search/ | portfolio_search | | 주식 검색 |
 | **portfolio** | /portfolio/create/ | portfolio_create | portfolio/portfolio_create.html | 포트폴리오 만들기 |
-| **portfolio** | /portfolio/add_stock/ | add_stock_to_portfolio |  | 포트폴리오에 들어갈 주식 추가 |
 | **portfolio** | /portfolio/int:pk/ | portfolio_read | portfolio/portfolio_read.html | 포트폴리오 결과 |
-| **portfolio** | /portfolio/update/int:pk/ | portfolio_update | portfolio/portfolio_update.html | 포트폴리오 수정 |
 | **portfolio** | /portfolio/delete/int:pk/ | portfolio_delete | portfolio/portfolio_delete.html | 포트폴리오 삭제 |
 
 
@@ -93,9 +90,8 @@
 
 4. 포트폴리오
     - 나의 주식 포트폴리오
-        - CRUD
-        - 포트폴리오 원 그래프, 수익률 그래프
-        - 산업 섹터 비율
+        - CRD
+        - 포트폴리오 수익률
     
 
 | 대분류 | 중분류 | 소분류 | 설명 | 완성 여부 |
@@ -118,8 +114,8 @@
 | | | 사진 | 사진 첨부 기능 | ㅇ |
 | | | 조회수 | 게시글 조회수 기능 | ㅇ |
 | | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 | ㅇ |
-| 4. 포트폴리오 | 포트폴리오 |  | 포트폴리오 CRUD | x |
-| | 포트폴리오 |  | 포트폴리오 그래프 기능 | x |
+| 4. 포트폴리오 | 포트폴리오 |  | 포트폴리오 CRD | ㅇ |
+| | 포트폴리오 |  | 포트폴리오 수익률 | x |
 | 5. 마무리 | 구현 영상 | - | - | x |
 | | README 파일 작성 | - | - | x |
 | | 배포 | - | - | x |
@@ -158,7 +154,6 @@ stock_community/
 │   │       ├── portfolio_list.html    # 포트폴리오 리스트
 │   │       ├── portfolio_create.html    # 포트폴리오 생성
 │   │       ├── portfolio_read.html     # 포트폴리오 결과
-│   │       ├── portfolio_update.html   # 포트폴리오 수정
 │   │       └── portfolio_delete.html   # 포트폴리오 삭제
 │   │
 │   └── base.html   # 기본 템플릿
@@ -237,7 +232,7 @@ gantt
     아이디어 기획      :2024-08-26, 1d
     WBS 작성          :2024-08-26, 1d
     ERD 그리기         :2024-08-26, 1d
-    와이어프레임        :2024-08-30, 1d
+    와이어프레임        :2024-08-31, 1d
 
     section 1. 사용자 등록
     회원가입           :2024-08-27, 1d
@@ -265,8 +260,8 @@ gantt
     포트폴리오 결과         :2024-08-29, 2d
 
     section 5. 마무리
-    UI                :2024-08-30, 1d
-    구현 영상          :2024-08-30, 1d
+    UI                :2024-08-31, 1d
+    구현 영상          :2024-08-31, 1d
     README 파일 작성   :2024-09-01, 1d
     배포              :2024-09-01, 1d
 ```
@@ -390,7 +385,6 @@ erDiagram
 ## 8. 추가적으로 해야할 사항
 
 
-- 포트폴리오 주식 추가 안되는 오류
 - UI 개선
 - 와이어 프레임 그리기 / 30일까지 완료
 - 배포
