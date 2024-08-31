@@ -19,7 +19,24 @@ class PortfolioStockForm(forms.ModelForm):
         label="Ticker",
         widget=forms.TextInput(attrs={
             'autocomplete': 'ticker'
-        })
+        }),
+        required=True
+    )
+    
+    quantity = forms.IntegerField(
+        label="Quantity",
+        widget=forms.NumberInput(attrs={
+            'autocomplete': 'quantity'
+        }),
+        required=True
+    )
+    
+    purchase_price = forms.DecimalField(
+        label="Purchase price",
+        widget=forms.NumberInput(attrs={
+            'autocomplete': 'purchase_price'
+        }),
+        required=True
     )
 
     class Meta:
@@ -33,10 +50,16 @@ class PortfolioStockForm(forms.ModelForm):
                 'autocomplete': 'purchase_price'
             }),
         }
+    
+    def clean_ticker(self):
+        ticker = self.cleaned_data.get('ticker')
+        if not Stock.objects.filter(ticker=ticker).exists():
+            raise forms.ValidationError(f"Ticker '{ticker}'는 유효하지 않습니다. 존재하지 않는 티커입니다.")
+        return ticker
 
 PortfolioStockFormSet = inlineformset_factory(
     Portfolio, PortfolioStock,
     form=PortfolioStockForm,
     extra=5,
-    can_delete=True
+    can_delete=False
 )
