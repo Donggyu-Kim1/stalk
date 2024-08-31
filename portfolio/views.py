@@ -33,22 +33,21 @@ class PortfolioCreateView(LoginRequiredMixin, CreateView):
         context = self.get_context_data()
         formset = context['formset']
 
-        # Portfolio 객체를 먼저 저장
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
+        if form.is_valid() and formset.is_valid():
+            self.object = form.save(commit=False)
+            self.object.user = self.request.user
+            self.object.save()
 
-        if formset.is_valid():
-            # 모든 formset 인스턴스에서 PortfolioStock 객체를 생성하고 저장
             for stock_form in formset:
-                portfolio_stock = stock_form.save(commit=False)
-                portfolio_stock.portfolio = self.object  # 현재 포트폴리오와 연결
-                # Stock 객체를 티커로 찾은 후 PortfolioStock 객체에 할당
-                ticker = stock_form.cleaned_data.get('ticker')
-                if ticker:
-                    stock = Stock.objects.get(ticker=ticker)
-                    portfolio_stock.stock = stock
-                    portfolio_stock.save()  # PortfolioStock 객체 저장
+                if stock_form.cleaned_data:
+                    portfolio_stock = stock_form.save(commit=False)
+                    portfolio_stock.portfolio = self.object
+
+                    ticker = stock_form.cleaned_data.get('ticker')
+                    if ticker:
+                        stock = Stock.objects.get(ticker=ticker)
+                        portfolio_stock.stock = stock
+                        portfolio_stock.save()
 
             return super().form_valid(form)
         else:
