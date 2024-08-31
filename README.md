@@ -94,33 +94,6 @@
         - 포트폴리오 수익률
     
 
-| 대분류 | 중분류 | 소분류 | 설명 | 완성 여부 |
-|--------|--------|--------|------| :--: |
-| 기획 | 아이디어 기획 | - | 핵심 기능 설계 | ㅇ |
-| | WBS 작성 | - | mermaid로 프로젝트 단계 세분화 | ㅇ |
-| | ERD 그리기 | - | DB, 앱 flow 그리기 | ㅇ |
-| | 와이어프레임 | - | 앱 UI 설계 및 그리기 | ㅇ |
-| 1. 사용자 등록 | 회원가입 | 기본 | 아이디, 비밀번호, 이름, 이메일 | ㅇ |
-| | 로그인 | - | 로그인 기능 | ㅇ |
-| | 로그아웃 | - | 사용자 세션 종료 | ㅇ |
-| | 프로필 관리 | | 사용자 프로필 수정 | ㅇ |
-| 2. 주식 정보 | 주식 정보 BD 구축 | - | 기업 이름 검색 | ㅇ |
-| | 기업 소개 | - | 기업에 대한 소개글 제공 | ㅇ |
-| | 기업 관련 뉴스 | 뉴스 크롤링 | Yahoo Finance에서 최신 뉴스 크롤링 | ㅇ |
-| | 주가 차트 | - | 주식의 가격 변동 차트 제공 | ㅇ |
-| | 재무 정보 | 기본 재무 정보 | 주요 재무 정보 표로 제공 | ㅇ |
-| | 번역 | - | stocks_detail 부분 영어 -> 한국어 번역 | ㅇ |
-| 3. 게시글 + 댓글 | 게시글 | CRUD | 게시글 생성, 조회, 수정, 삭제 기능 | ㅇ |
-| | | 사진 | 사진 첨부 기능 | ㅇ |
-| | | 조회수 | 게시글 조회수 기능 | ㅇ |
-| | 댓글 | CRUD | 댓글 생성, 조회, 수정, 삭제 | ㅇ |
-| 4. 포트폴리오 | 포트폴리오 |  | 포트폴리오 CRD | ㅇ |
-| | 포트폴리오 |  | 포트폴리오 수익률 | ㅇ |
-| 5. 마무리 | 구현 영상 | - | - | ㅇ |
-| | README 파일 작성 | - | - | ㅇ |
-| | 배포 | - | - | x |
-
-
 ## 4. 프로젝트 구조와 개발 일정
 
 ### 4.1 프로젝트 구조
@@ -303,6 +276,22 @@ graph TD
 
 ### 5.2 와이어프레임
 
+#### Main
+
+![main](https://github.com/user-attachments/assets/27c60f3c-2e38-4f4f-a5ef-07fca3f42302)
+
+#### stock
+
+![stock](https://github.com/user-attachments/assets/1057e2ae-6a6e-43af-9aa2-3586c3330b23)
+
+#### profile
+
+![profile](https://github.com/user-attachments/assets/d2c14e89-640a-433f-9ebe-b1d90e3c6cab)
+
+#### portfolio
+
+![portfolio](https://github.com/user-attachments/assets/2b5eaec4-93ad-43f3-946b-23bb30d2491e)
+
 
 ## 6. 데이터베이스 구조도(ERD)
 
@@ -381,23 +370,24 @@ erDiagram
 
 
 ## 7. 구현 영상
-1. 회원가입
 
-![signup](https://github.com/user-attachments/assets/0a0502f6-77ce-46f4-b86a-10ee586b8b7c)
+#### 회원가입
 
-2. 로그인
+![signup](https://github.com/user-attachments/assets/0128094b-6035-41c1-bfa1-b0c8ae60c3f6)
+
+#### 로그인
 
 ![login](https://github.com/user-attachments/assets/1c92d17d-60dd-4b2c-8102-77390bdf6992)
 
-3. 프로필
+#### 프로필
 
 ![profile](https://github.com/user-attachments/assets/b6b88294-2bd0-4038-8661-398afaa79151)
 
-4. 주식 정보
+#### 주식 정보
 
-![stock](https://github.com/user-attachments/assets/e57fbf1c-76ae-4be9-afbd-f6225aeb332a)
+![stock](https://github.com/user-attachments/assets/b5c0070c-3ca0-480a-b296-fd48ff6738d9)
 
-5. 게시판
+#### 게시판
 
 ![go_post](https://github.com/user-attachments/assets/235bba8e-ddd8-4dc6-a748-641588b9cd5b)
 
@@ -405,6 +395,6 @@ erDiagram
 
 ![comment](https://github.com/user-attachments/assets/649b2c1c-65ff-4e61-bd3d-bba131dca0b8)
 
-6. 포트폴리오
+#### 포트폴리오
 
 ![portfolio](https://github.com/user-attachments/assets/490eb41d-c4fa-4d38-a4e2-76d4f193bd4f)
