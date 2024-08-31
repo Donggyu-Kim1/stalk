@@ -3,34 +3,59 @@
 {% block title %}포트폴리오 상세 정보{% endblock %}
 
 {% block content %}
-<h2>포트폴리오명: {{ portfolio.name }}</h2>
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">포트폴리오명: {{ portfolio.name }}</h2>
+        </div>
+        <div class="card-body">
+            <h3 class="card-title">주식 목록</h3>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>티커</th>
+                            <th>매입가</th>
+                            <th>수량</th>
+                            <th>현재가</th>
+                            <th>수익률</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for stock in stocks %}
+                        <tr>
+                            <td>{{ stock.ticker }}</td>
+                            <td>${{ stock.purchase_price|floatformat:2 }}</td>
+                            <td>{{ stock.quantity }}</td>
+                            <td>${{ stock.current_price|floatformat:2 }}</td>
+                            <td class="{% if stock.return_rate > 0 %}text-success{% elif stock.return_rate < 0 %}text-danger{% endif %}">
+                                {{ stock.return_rate|floatformat:2 }}%
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+            <h3 class="mb-0">전체 포트폴리오 수익률: 
+                <span class="{% if portfolio_return_rate > 0 %}text-success{% elif portfolio_return_rate < 0 %}text-danger{% endif %}">
+                    {{ portfolio_return_rate|floatformat:2 }}%
+                </span>
+            </h3>
+        </div>
+    </div>
 
-<h2>주식 목록</h2>
-<table>
-    <thead>
-        <tr>
-            <th>티커</th>
-            <th>매입가</th>
-            <th>수량</th>
-            <th>현재가</th>
-            <th>수익률</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for stock in stocks %}
-        <tr>
-            <td>{{ stock.ticker }}</td>
-            <td>{{ stock.purchase_price }}</td>
-            <td>{{ stock.quantity }}</td>
-            <td>{{ stock.current_price }}</td>
-            <td>{{ stock.return_rate }}%</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger">
+            <i class="bi bi-trash me-2"></i>포트폴리오 삭제
+        </a>
+        <a href="{% url 'portfolio:portfolio_list' %}" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-2"></i>목록으로 돌아가기
+        </a>
+    </div>
+</div>
 
-<h2>전체 포트폴리오 수익률: {{ portfolio_return_rate }}%</h2>
-
-<a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger">포트폴리오 삭제</a>
-<a href="{% url 'portfolio:portfolio_list' %}" class="btn btn-secondary">목록으로 돌아가기</a>
+<!-- Bootstrap Icons CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 {% endblock %}

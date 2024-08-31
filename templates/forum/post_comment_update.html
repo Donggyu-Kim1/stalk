@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>댓글 수정</h2>
+<div class="container mt-5">
+    <h2 class="mb-4">댓글 수정</h2>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">수정</button>
-</form>
-
-<a href="{% url 'forum:post_read' ticker=view.kwargs.ticker post_id=view.kwargs.post_id %}" class="btn btn-secondary mt-3">취소</a>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">수정</button>
+        <a href="{% url 'forum:post_read' ticker=view.kwargs.ticker post_id=view.kwargs.post_id %}" class="btn btn-secondary ms-2">취소</a>
+    </form>
+</div>
 {% endblock %}

@@ -3,34 +3,58 @@
 {% block title %}포트폴리오 목록{% endblock %}
 
 {% block content %}
-<h2>포트폴리오 목록</h2>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>포트폴리오 목록</h2>
+        <a href="{% url 'portfolio:portfolio_create' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i>새 포트폴리오 만들기
+        </a>
+    </div>
 
-<a href="{% url 'portfolio:portfolio_create' %}" class="btn btn-primary">새 포트폴리오 만들기</a>
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>포트폴리오 이름</th>
+                            <th>생성일</th>
+                            <th>액션</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for portfolio in portfolios %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'portfolio:portfolio_read' portfolio.pk %}" class="text-decoration-none">
+                                    {{ portfolio.name }}
+                                </a>
+                            </td>
+                            <td>{{ portfolio.created_at|date:"Y-m-d" }}</td>
+                            <td>
+                                <a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash me-1"></i>삭제
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center text-muted">포트폴리오가 없습니다.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>포트폴리오 이름</th>
-            <th>생성일</th>
-            <th>액션</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for portfolio in portfolios %}
-        <tr>
-            <td><a href="{% url 'portfolio:portfolio_read' portfolio.pk %}">{{ portfolio.name }}</a></td>
-            <td>{{ portfolio.created_at|date:"Y-m-d" }}</td>
-            <td>
-                <a href="{% url 'portfolio:portfolio_delete' portfolio.pk %}" class="btn btn-danger">삭제</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="3">포트폴리오가 없습니다.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="mt-4">
+        <a href="{% url 'home' %}" class="btn btn-secondary">
+            <i class="bi bi-house-door me-2"></i>홈으로
+        </a>
+    </div>
+</div>
 
-<a href="{% url 'home' %}" class="btn btn-secondary">홈으로</a>
+<!-- Bootstrap Icons CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 {% endblock %}

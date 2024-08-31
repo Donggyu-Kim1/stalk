@@ -3,10 +3,23 @@
 {% block title %}로그인{% endblock %}
 
 {% block content %}
-<h2>로그인</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">로그인</button>
-</form>
+<div class="container mt-5">
+    <h2 class="mb-4">로그인</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="mb-3">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field.as_widget|safe }}
+                {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+                {% for error in field.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">로그인</button>
+    </form>
+</div>
 {% endblock %}

@@ -3,13 +3,27 @@
 {% block title %}포트폴리오 삭제{% endblock %}
 
 {% block content %}
-<h2>포트폴리오 삭제</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="mb-0">포트폴리오 삭제</h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">정말로 <strong>{{ object.name }}</strong> 포트폴리오를 삭제하시겠습니까?</p>
+                    <p class="text-muted small">이 작업은 되돌릴 수 없습니다.</p>
 
-<p>정말로 {{ object.name }} 포트폴리오를 삭제하시겠습니까?</p>
-
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">삭제</button>
-    <a href="{% url 'portfolio:portfolio_read' object.pk %}" class="btn btn-secondary">취소</a>
-</form>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-end">
+                            <a href="{% url 'portfolio:portfolio_read' object.pk %}" class="btn btn-secondary me-2">취소</a>
+                            <button type="submit" class="btn btn-danger">삭제</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

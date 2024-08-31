@@ -40,7 +40,7 @@
     {% for item in news %}
         <li>
             <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
-            <p>{{ item.publisher }} - {{ item.providerPublishTime|date:"F d, Y" }}</p>
+            <p>{{ item.publisher }}</p>
         </li>
     {% endfor %}
     </ul>

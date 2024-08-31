@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>댓글 삭제 확인</h2>
-<p>정말로 이 댓글을 삭제하시겠습니까?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">삭제</button>
-</form>
-<a href="{% url 'forum:post_read' ticker=view.kwargs.ticker post_id=view.kwargs.post_id %}" class="btn btn-secondary mt-3">취소</a>
+<div class="container mt-5">
+    <h2 class="mb-4">댓글 삭제 확인</h2>
+    <p class="mb-4">정말로 이 댓글을 삭제하시겠습니까?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">삭제</button>
+        <a href="{% url 'forum:post_read' ticker=view.kwargs.ticker post_id=view.kwargs.post_id %}" class="btn btn-secondary ms-2">취소</a>
+    </form>
+</div>
 {% endblock %}

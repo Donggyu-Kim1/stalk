@@ -6,11 +6,11 @@
                 <small class="text-muted">
                     by {{ comment.author }} | {{ comment.created_at|date:"Y-m-d H:i" }}
                     {% if user == comment.author %}
-                        | <a href="{% url 'forum:post_comment_update' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=comment.id %}">수정</a>
-                        | <a href="{% url 'forum:post_comment_delete' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=comment.id %}">삭제</a>
+                        | <a href="{% url 'forum:post_comment_update' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=comment.id %}" class="text-decoration-none">수정</a>
+                        | <a href="{% url 'forum:post_comment_delete' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=comment.id %}" class="text-decoration-none">삭제</a>
                     {% endif %}
                 </small>
-                
+
                 <!-- 대댓글 작성 폼 -->
                 <form method="post" action="{% url 'forum:post_read' ticker=post.stock_ticker.ticker post_id=post.post_id %}" class="mt-2">
                     {% csrf_token %}
@@ -20,7 +20,7 @@
                     <input type="hidden" name="parent_id" value="{{ comment.id }}">
                     <button type="submit" class="btn btn-sm btn-secondary mt-1">답글 작성</button>
                 </form>
-                
+
                 <!-- 대댓글 표시 -->
                 {% if comment.replies.all %}
                     <ul class="list-group mt-2">
@@ -30,8 +30,8 @@
                                 <small class="text-muted">
                                     by {{ reply.author }} | {{ reply.created_at|date:"Y-m-d H:i" }}
                                     {% if user == reply.author %}
-                                        | <a href="{% url 'forum:post_comment_update' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=reply.id %}">수정</a>
-                                        | <a href="{% url 'forum:post_comment_delete' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=reply.id %}">삭제</a>
+                                        | <a href="{% url 'forum:post_comment_update' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=reply.id %}" class="text-decoration-none">수정</a>
+                                        | <a href="{% url 'forum:post_comment_delete' ticker=post.stock_ticker.ticker post_id=post.post_id comment_id=reply.id %}" class="text-decoration-none">삭제</a>
                                     {% endif %}
                                 </small>
                             </li>

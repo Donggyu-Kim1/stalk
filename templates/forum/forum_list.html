@@ -1,55 +1,60 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ stock.company_name }} ({{ stock.ticker }}) 토론방</h1>
+<div class="container">
+    <h1 class="mb-4">{{ stock.company_name }} ({{ stock.ticker }}) 토론방</h1>
 
-<a href="{% url 'forum:post_create' ticker=stock.ticker %}" class="btn btn-primary">새 글 작성</a>
+    <div class="d-flex justify-content-between mb-3">
+        <a href="{% url 'forum:post_create' ticker=stock.ticker %}" class="btn btn-primary">새 글 작성</a>
+        <form method="get" action="{% url 'forum:forum_list' ticker=stock.ticker %}" class="d-flex">
+            <input type="text" name="q" value="{{ request.GET.q }}" class="form-control me-2" placeholder="게시글 검색...">
+            <button type="submit" class="btn btn-outline-secondary">검색</button>
+        </form>
+    </div>
 
-<form method="get" action="{% url 'forum:forum_list' ticker=stock.ticker %}">
-    <input type="text" name="q" value="{{ request.GET.q }}" placeholder="게시글 검색...">
-    <button type="submit">검색</button>
-</form>
+    {% if posts %}
+        <ul class="list-group">
+            {% for post in posts %}
+                <li class="list-group-item">
+                    <a href="{% url 'forum:post_read' ticker=stock.ticker post_id=post.post_id %}" class="text-decoration-none">
+                        {{ post.title }}
+                    </a>
+                    <div class="text-muted small mt-2">
+                        작성자: {{ post.author }} | 조회수: {{ post.views }} | 작성일: {{ post.created_at|date:"Y-m-d H:i" }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
 
-{% if posts %}
-    <ul class="list-group mt-3">
-        {% for post in posts %}
-            <li class="list-group-item">
-                <a href="{% url 'forum:post_read' ticker=stock.ticker post_id=post.post_id %}">
-                    {{ post.title }}
-                </a>
-                <small class="text-muted">
-                    by {{ post.author }} | 조회수: {{ post.views }} | {{ post.created_at|date:"Y-m-d H:i" }}
-                </small>
-            </li>
-        {% endfor %}
-    </ul>
-    
-    {% if is_paginated %}
-        <nav aria-label="Page navigation" class="mt-3">
-            <ul class="pagination">
-                {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a></li>
-                {% endif %}
-                {% for num in page_obj.paginator.page_range %}
-                    {% if page_obj.number == num %}
-                        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
-                    {% else %}
-                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+        {% if is_paginated %}
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">이전</a></li>
                     {% endif %}
-                {% endfor %}
-                {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">다음</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}
+        <p class="mt-4">아직 게시글이 없습니다.</p>
     {% endif %}
-{% else %}
-    <p class="mt-3">아직 게시글이 없습니다.</p>
-{% endif %}
 
-<a href="{% url 'stocks:detail' pk=stock.ticker %}" class="btn btn-secondary mt-3">주식 상세 정보로 돌아가기</a>
-<form method="POST" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
+    <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'stocks:detail' pk=stock.ticker %}" class="btn btn-secondary">주식 상세 정보로 돌아가기</a>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Logout</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

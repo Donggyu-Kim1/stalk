@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>글 삭제</h1>
+<div class="container mt-5">
+    <h1 class="mb-4">글 삭제</h1>
 
-<p>정말로 이 글을 삭제하시겠습니까?</p>
+    <p class="mb-4">정말로 이 글을 삭제하시겠습니까?</p>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">삭제</button>
-    <a href="{% url 'forum:post_read' ticker=view.kwargs.ticker post_id=view.kwargs.post_id %}" class="btn btn-secondary">취소</a>
-</form>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">삭제</button>
+        <a href="{% url 'forum:post_read' ticker=view.kwargs.ticker post_id=view.kwargs.post_id %}" class="btn btn-secondary ms-2">취소</a>
+    </form>
+</div>
 {% endblock %}

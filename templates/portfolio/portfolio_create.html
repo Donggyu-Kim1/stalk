@@ -1,26 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>포트폴리오 만들기</h1>
+<div class="container mt-4">
+    <h1 class="mb-4">포트폴리오 만들기</h1>
 
-<h2>포트폴리오 이름</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-4">
+            <h2 class="h4">포트폴리오 이름</h2>
+            {{ form.as_p }}
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <h2>Stocks</h2>
-    <div id="formset-area">
-        {{ formset.management_form }}
-        {% for form in formset %}
-            <div class="form-row">
-                {{ form.as_p }}
-                <button type="button" class="delete-form">Delete</button>
-            </div>
-        {% endfor %}
-    </div>
-    <button type="button" id="add-form">Add Another Stock</button>
-    <button type="submit">Create Portfolio</button>
-</form>
+        <h2 class="h4 mb-3">Stocks</h2>
+        <div id="formset-area">
+            {{ formset.management_form }}
+            {% for form in formset %}
+                <div class="form-row border p-3 mb-3 rounded">
+                    {{ form.as_p }}
+                    <button type="button" class="btn btn-danger delete-form">Delete</button>
+                </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-form" class="btn btn-secondary mb-3">Add Another Stock</button>
+        <button type="submit" class="btn btn-primary">Create Portfolio</button>
+    </form>
+</div>
 
 <!-- JavaScript to handle dynamic form addition -->
 <script>
@@ -39,6 +43,7 @@
             const inputs = newForm.querySelectorAll('input');
             inputs.forEach(input => {
                 input.value = '';
+                input.classList.add('form-control');  // Bootstrap class
                 const nameAttr = input.getAttribute('name');
                 if (nameAttr) {
                     const newName = nameAttr.replace(regex, `stock-${formIndex}`);
@@ -49,6 +54,7 @@
         
             const labels = newForm.querySelectorAll('label');
             labels.forEach(label => {
+                label.classList.add('form-label');  // Bootstrap class
                 const forAttr = label.getAttribute('for');
                 if (forAttr) {
                     const newFor = forAttr.replace(regex, `stock-${formIndex}`);
@@ -72,5 +78,4 @@
         });
     });
 </script>
-
 {% endblock %}
