@@ -3,15 +3,15 @@
 {% block content %}
 <a href="{% url 'stocks:search' %}" class="btn btn-secondary mb-3">검색으로 돌아가기</a>
 
-<h1>{{ stock.company_name }} ({{ stock.ticker }})</h1>
-<p>거래소: {{ stock.exchange }}</p>
+<h1 class="display-4">{{ stock.company_name }} ({{ stock.ticker }})</h1>
+<p class="text-muted">거래소: {{ stock.exchange }}</p>
 
 <a href="{% url 'forum:forum_list' ticker=stock.ticker %}" class="btn btn-primary mb-3">토론방 입장하기</a>
 
-<h2>기업 개요</h2>
+<h2 class="h4">기업 개요</h2>
 <p>{{ company_info }}</p>
 
-<h2>주식 차트</h2>
+<h2 class="h4">주식 차트</h2>
 <div id="chart"></div>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script>
@@ -34,21 +34,21 @@
     Plotly.newPlot('chart', [trace], layout);
 </script>
 
-<h2>최신 뉴스</h2>
+<h2 class="h4">최신 뉴스</h2>
 {% if news %}
-    <ul>
+    <ul class="list-group">
     {% for item in news %}
-        <li>
+        <li class="list-group-item">
             <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
-            <p>{{ item.publisher }}</p>
+            <p class="mb-0"><small>{{ item.publisher }}</small></p>
         </li>
     {% endfor %}
     </ul>
 {% else %}
-    <p>표시할 뉴스가 없습니다.</p>
+    <p class="text-muted">표시할 뉴스가 없습니다.</p>
 {% endif %}
 
-<h2>재무 정보</h2>
+<h2 class="h4">재무 정보</h2>
 {{ financials|safe }}
 
 {% endblock %}
