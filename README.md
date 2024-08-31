@@ -3,7 +3,7 @@
 ## 1. 목표와 기능
 
 1.1 목표
-- 미국 주식 투자를 위한 기본적인 기업 정보 제공
+- 미국 주식 투자를 위한 기업 정보 제공
 - 기업별(미국에 상장된)로 사용자들끼리 게시판 형식의 정보 공유 공간 제공
 - 주식 포트폴리오 만들기
 
@@ -35,6 +35,7 @@
 | -- | -- | -- | -- | -- |
 | **stocks** | /stocks/search/ | search | stocks/stocks_search.html | 주식 검색 창 |
 | **stocks** | /stocks/detail/str:pk/ | detail | stocks/stocks_detail.html | 주식 소개 글, 차트, 뉴스, 재무정보 |
+| **stocks** | /stocks/index | index | stocks/index.html | 주가지수 |
 
 #### Accounts URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
@@ -119,7 +120,7 @@
 | 5. 마무리 | 구현 영상 | - | - | x |
 | | README 파일 작성 | - | - | x |
 | | 배포 | - | - | x |
-    
+
 
 ## 4. 프로젝트 구조와 개발 일정
 
@@ -131,6 +132,7 @@ stock_community/
 ├── manage.py
 ├── templates/
 │   │   ├── stocks/
+│   │   |   ├── stocks_index.html  # 지수 표시(base.html에 추가)
 │   │   |   ├── stocks_search.html  # 주식 검색 창
 │   │   |   └── stocks_detail.html  # 기업 소개 글, 뉴스, 차트, 재무 정보
 |   |   |
