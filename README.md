@@ -382,15 +382,16 @@ erDiagram
 
 ## 7. 구현 영상
 1. 회원가입
-
+![signup](https://github.com/user-attachments/assets/ee55bece-a4aa-4936-9f5e-54f71b5a932f)
 2. 로그인
-
+![login](https://github.com/user-attachments/assets/86b69177-29a5-4537-82b7-a23276e79ba4)
 3. 프로필
-
+![profile](https://github.com/user-attachments/assets/39838ebf-c1d5-45de-ae45-65c92405aa9a)
 4. 주식 정보
-
+![stock](https://github.com/user-attachments/assets/f7a4300d-4ca2-4026-862c-50e8faf88dff)
 5. 게시판
-
-
-
+![go_post](https://github.com/user-attachments/assets/17bb0e06-a2b8-4ba7-8bd3-ab3dad4deaf5)
+![post](https://github.com/user-attachments/assets/736333b0-59f7-4ea4-92f0-7965830900d4)
+![comment](https://github.com/user-attachments/assets/543f24d0-8737-4e84-b877-8fda84b7154a)
 6. 포트폴리오
+![portfolio](https://github.com/user-attachments/assets/5fdfd3af-6d68-469d-a5ab-9f0ba2696b2f)
