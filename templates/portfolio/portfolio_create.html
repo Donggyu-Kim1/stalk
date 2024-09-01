@@ -26,7 +26,7 @@
     </form>
 </div>
 
-<!-- JavaScript to handle dynamic form addition -->
+<!-- 폼 추가, 삭제 동적 기능을 위한 자바스크립트 -->
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const formsetArea = document.getElementById('formset-area');
@@ -43,7 +43,7 @@
             const inputs = newForm.querySelectorAll('input');
             inputs.forEach(input => {
                 input.value = '';
-                input.classList.add('form-control');  // Bootstrap class
+                input.classList.add('form-control');
                 const nameAttr = input.getAttribute('name');
                 if (nameAttr) {
                     const newName = nameAttr.replace(regex, `stock-${formIndex}`);
@@ -54,11 +54,11 @@
         
             const labels = newForm.querySelectorAll('label');
             labels.forEach(label => {
-                label.classList.add('form-label');  // Bootstrap class
+                label.classList.add('form-label');
                 const forAttr = label.getAttribute('for');
                 if (forAttr) {
                     const newFor = forAttr.replace(regex, `stock-${formIndex}`);
-                    const newId = newFor.replace('id_', ''); // id_ 제거
+                    const newId = newFor.replace('id_', '');
                     label.setAttribute('for', newId);
                 }
             });
