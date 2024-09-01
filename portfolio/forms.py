@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory  # form 편집 기능
 from .models import Portfolio, PortfolioStock
 from stocks.models import Stock
 
@@ -9,7 +9,7 @@ class PortfolioForm(forms.ModelForm):
         fields = ['name']
         widgets = {
             'name': forms.TextInput(attrs={
-                'autocomplete': 'name',
+                'autocomplete': 'name', # 자동완성 기능
             }),
         }
 
@@ -20,7 +20,7 @@ class PortfolioStockForm(forms.ModelForm):
         widget=forms.TextInput(attrs={
             'autocomplete': 'ticker'
         }),
-        required=True
+        required=True   # 각 항목들 필수로
     )
     
     quantity = forms.IntegerField(
@@ -51,6 +51,7 @@ class PortfolioStockForm(forms.ModelForm):
             }),
         }
     
+    # stock 테이블에 있는 ticker와 form에 입력한 ticker가 일치하지 않는다면 에러
     def clean_ticker(self):
         ticker = self.cleaned_data.get('ticker')
         if not Stock.objects.filter(ticker=ticker).exists():
@@ -60,6 +61,6 @@ class PortfolioStockForm(forms.ModelForm):
 PortfolioStockFormSet = inlineformset_factory(
     Portfolio, PortfolioStock,
     form=PortfolioStockForm,
-    extra=5,
-    can_delete=False
+    extra=5,    # 기본 5개
+    can_delete=False, # html에서 delete 버튼을 이용해 삭제
 )

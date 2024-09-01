@@ -12,7 +12,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True)  # 수정 시간
     views = models.PositiveIntegerField(default=0)  # 조회수
     stock_ticker = models.ForeignKey('stocks.Stock', on_delete=models.CASCADE, to_field='ticker')   # 주식 티커
-    image = models.ImageField(upload_to='post_images/', null=True, blank=True)
+    image = models.ImageField(upload_to='post_images/', null=True, blank=True)  # 이미지
 
     def __str__(self):
         return self.title

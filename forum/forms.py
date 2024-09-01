@@ -8,7 +8,7 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'content', 'image']  # 폼에서 표시할 필드
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),  # 부트스트랩으로 폼 필드 사용
             'content': forms.Textarea(attrs={'class': 'form-control'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }

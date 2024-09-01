@@ -8,6 +8,11 @@ import yfinance as yf
 from decimal import Decimal
 
 class PortfolioListView(LoginRequiredMixin, ListView):
+    '''
+    포트폴리오 모델 사용
+    템플릿에서 portfolios로 리스트 값 사용
+    포트폴리오 모델에서 user 값에 담긴 쿼리를 불러와 리스트에 담음
+    '''
     model = Portfolio
     template_name = 'portfolio/portfolio_list.html'
     context_object_name = 'portfolios'
@@ -17,6 +22,13 @@ class PortfolioListView(LoginRequiredMixin, ListView):
 
 
 class PortfolioCreateView(LoginRequiredMixin, CreateView):
+    '''
+    포트폴리오 만들기 기능
+    Post 요청(제출)의 경우, post 데이터를 사용하여 폼셋 초기화
+    prefix를 통해 다른 폼과 구별
+    get 요청(페이지 로드)의 겅우, 빈 폼셋 초기화
+    폼 유효성 검사, 폼셋이 모두 유효한 경우에만 db에 저장
+    '''
     model = Portfolio
     form_class = PortfolioForm
     template_name = 'portfolio/portfolio_create.html'
@@ -58,6 +70,10 @@ class PortfolioCreateView(LoginRequiredMixin, CreateView):
 
 
 class PortfolioReadView(LoginRequiredMixin, DetailView):
+    '''
+    포트폴리오 수익률 계산
+    select_related로 stock 값도 미리 가져옴, 데이터베이스 쿼리 회수 감소
+    '''
     model = Portfolio
     template_name = 'portfolio/portfolio_read.html'
     context_object_name = 'portfolio'
@@ -97,6 +113,9 @@ class PortfolioReadView(LoginRequiredMixin, DetailView):
 
 
 class PortfolioDeleteView(LoginRequiredMixin, DeleteView):
+    '''
+    포트폴리오 삭제 기능
+    '''
     model = Portfolio
     template_name = 'portfolio/portfolio_delete.html'
     success_url = reverse_lazy('portfolio:portfolio_list')

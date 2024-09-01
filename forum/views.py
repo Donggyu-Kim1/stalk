@@ -9,6 +9,13 @@ from .forms import PostForm, CommentForm
 
 
 class ForumMainView(ListView):
+    '''
+    Post 모델, 템필릿에서 리스트 표시 시 posts 사용
+    url에서 ticker 값을 가져와 해당 티커의 값을 가진 post만 가져옴
+    최신순 정렬
+    제목 or 내용에 있는 글자를 쿼리로 검색할 수 있게 함
+    티커 값이 Stock 테이블에 없는 값이면 404 에러
+    '''
     model = Post
     template_name = 'forum/forum_list.html'
     context_object_name = 'posts'
@@ -29,6 +36,11 @@ class ForumMainView(ListView):
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
+    '''
+    PostForm 사용
+    로그인한 유저만 PostCreateView에 접근할 수 있도록 LoginRequiredMixin 사용
+    성공 시 동일 티커 값을 가진 리스트 페이지로 이동
+    '''
     model = Post
     form_class = PostForm
     template_name = 'forum/post_create.html'
@@ -48,6 +60,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 
 class PostReadView(DetailView):
+    '''
+    pk_url_kwarg 값 post_id 지정
+    get_object 할때마다 views 1씩 증가
+    댓글 기능, 부모가 없는 경우 댓글, 부모가 있는 경우 대댓글
+    모델에 담길 수 있도록 유효성 검사
+    '''
     model = Post
     template_name = 'forum/post_read.html'
     context_object_name = 'post'
@@ -84,6 +102,11 @@ class PostReadView(DetailView):
 
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    '''
+    수정기능, Post Form
+    로그인한 유저만 PostUpdateView에 접근할 수 있도록 LoginRequiredMixin, UserPassesTestMixin 사용
+    성공 시 동일 ticker 값을 가진 리드 페이지로 이동
+    '''
     model = Post
     form_class = PostForm
     template_name = 'forum/post_update.html'
@@ -98,6 +121,9 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    '''
+    삭제 기능, 동일 티커 list로 이동
+    '''
     model = Post
     template_name = 'forum/post_delete.html'
     pk_url_kwarg = 'post_id'
@@ -111,6 +137,9 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 
 class PostCommentListView(ListView):
+    '''
+    댓글 리스트, 템플릿에서 read 뷰에 include
+    '''
     model = Comment
     template_name = 'forum/post_comment_list.html'
     context_object_name = 'comments'
@@ -126,6 +155,9 @@ class PostCommentListView(ListView):
 
 
 class PostCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    '''
+    댓글 수정 기능, 각 모델의 참조 값에 따라 read 뷰로 이동
+    '''
     model = Comment
     fields = ['content']
     template_name = 'forum/post_comment_update.html'
@@ -143,6 +175,9 @@ class PostCommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
 
 class PostCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    '''
+    댓글 삭제 기능
+    '''
     model = Comment
     template_name = 'forum/post_comment_delete.html'
     pk_url_kwarg = 'comment_id'

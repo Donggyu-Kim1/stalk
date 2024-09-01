@@ -6,6 +6,11 @@ from googletrans import Translator
 
 
 class StocksSearchView(ListView):
+    '''
+    주식 검색 기능, 템플릿에서 stocks로 list 불러옴
+    리스트 20개씩으로 페이지 나눔
+    get 방식으로 stock 테이블에 저장된 ticker or 회사 이름을 검색하면 순서대로 출력
+    '''
     model = Stock
     template_name = 'stocks/stocks_search.html'
     context_object_name = 'stocks'
@@ -27,6 +32,11 @@ class StocksSearchView(ListView):
 
 
 class StockDetailView(DetailView):
+    '''
+    yfinance로 각 주식 정보 제공 기능
+    번역 기능
+    json으로 종가 저장
+    '''
     model = Stock
     template_name = 'stocks/stocks_detail.html'
     context_object_name = 'stock'
