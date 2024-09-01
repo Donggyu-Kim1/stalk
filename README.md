@@ -22,6 +22,12 @@
     - 포트폴리오 생성
     - 포트폴리오 수익률
 
+1.3 기술 스택
+
+<img src="https://img.shields.io/badge/django-092E20?style=for-the-badge&logo=django&logoColor=white">
+<br>
+<img src="https://img.shields.io/badge/bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white">
+
 ## 2. URL 구조
 
 #### Main URL
