@@ -34,7 +34,6 @@
 | -- | -- | -- | -- | -- |
 | **stocks** | /stocks/search/ | search | stocks/stocks_search.html | 주식 검색 창 |
 | **stocks** | /stocks/detail/str:pk/ | detail | stocks/stocks_detail.html | 주식 소개 글, 차트, 뉴스, 재무정보 |
-| **stocks** | /stocks/index | index | stocks/index.html | 주가지수 |
 
 #### Accounts URL
 | **App** | **URL** | **Views Function** | **HTML File Name** | **Note** |
@@ -200,7 +199,7 @@ stock_community/
 ```mermaid
 gantt
     title 주식 커뮤니티 프로젝트 WBS
-    dateFormat  YYYY-MM-DD HH:mm
+    dateFormat  YYYY-MM-DD
 
     section 기획
     아이디어 기획      :2024-08-26, 1d
@@ -371,13 +370,9 @@ erDiagram
 
 ## 7. 구현 영상
 
-#### 회원가입
+#### 회원가입 & 로그인
 
 ![signup](https://github.com/user-attachments/assets/0128094b-6035-41c1-bfa1-b0c8ae60c3f6)
-
-#### 로그인
-
-![login](https://github.com/user-attachments/assets/1c92d17d-60dd-4b2c-8102-77390bdf6992)
 
 #### 프로필
 
