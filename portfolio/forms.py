@@ -16,7 +16,7 @@ class PortfolioForm(forms.ModelForm):
 class PortfolioStockForm(forms.ModelForm):
     ticker = forms.CharField(
         max_length=10, 
-        label="Ticker",
+        label='Ticker',
         widget=forms.TextInput(attrs={
             'autocomplete': 'ticker'
         }),
@@ -24,7 +24,7 @@ class PortfolioStockForm(forms.ModelForm):
     )
     
     quantity = forms.IntegerField(
-        label="Quantity",
+        label='Quantity',
         widget=forms.NumberInput(attrs={
             'autocomplete': 'quantity'
         }),
@@ -32,7 +32,7 @@ class PortfolioStockForm(forms.ModelForm):
     )
     
     purchase_price = forms.DecimalField(
-        label="Purchase price",
+        label='Purchase price',
         widget=forms.NumberInput(attrs={
             'autocomplete': 'purchase_price'
         }),

@@ -18,7 +18,7 @@ class PortfolioStock(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # 추가된 날짜
 
     def __str__(self):
-        return f"{self.stock.ticker} in {self.portfolio.name}"
+        return f'{self.stock.ticker} in {self.portfolio.name}'
 
     class Meta:
         unique_together = ['portfolio', 'stock']  # 포트폴리오에 동일 주식을 중복 추가 X
